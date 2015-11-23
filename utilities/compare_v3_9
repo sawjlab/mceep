@@ -1,0 +1,53 @@
+#!/bin/sh
+#
+# Script to run mceep and compare output with that provided
+# with the distribution.
+#
+# Set up environment variables.
+#
+cd ../..
+mceep_home=`pwd`
+cd mceep/utilities
+mceep_cmn=$mceep_home/mceep/cmn; export mceep_cmn
+mceep_dat=$mceep_home/mceep/dat; export mceep_dat
+mceep_util=$mceep_home/mceep/utilities; export mceep_util
+#
+# Set up file names.
+#
+prefix="v3_9"
+infile=$prefix".inp"
+sumfile=$prefix".sum"
+outfile=$prefix".cmp"
+cp ../input/$infile ../output/$infile
+cd ../output
+#
+# Run mceep with info taken from temp_mceep.
+#
+echo $prefix > temp_mceep
+echo "b" >> temp_mceep
+echo "2" >> temp_mceep
+echo " " >> temp_mceep
+echo "200" >> temp_mceep
+echo "p" >> temp_mceep
+echo "10" >> temp_mceep
+echo "n" >> temp_mceep
+../sources/mceep < temp_mceep > $outfile
+#
+# Determine mceep output by scanning the mceep input file
+# and compare output to distribution versions.
+#
+echo "diff -w -C1 ../input/"$sumfile "../output/"$sumfile > temp_compare
+#
+awk -F, '$1~/H1D|h1d|H2D|h2d|SCT|sct|P1D|p1d|P2D|p2d|SCA|sca|NTU|ntu|NTM|ntm/ {
+  print "diff -w -C1 ../input/"$NF " ../output/"$NF
+}' $infile >> temp_compare
+chmod a+x temp_compare
+./temp_compare > $outfile
+#
+# Clean-up
+#
+rm temp_mceep
+rm temp_compare
+#
+echo "Examine the file ../output/"$outfile "for differences"
+

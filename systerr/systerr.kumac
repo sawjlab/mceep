@@ -1,0 +1,196 @@
+*
+* ----------------------------------------------------------------
+* ----------------------------------------------------------------
+* Kumac to produce error histograms
+* ----------------------------------------------------------------
+* ----------------------------------------------------------------
+*
+* ----------------------------------------------------------------
+* Set up histogram limits and # of channels.
+* ----------------------------------------------------------------
+*
+var=prmag
+lo=0
+hi=200
+nchan=40
+*
+* ----------------------------------------------------------------
+* Create histogram of average cross section:  ID=901.
+* Note that for the errors we needn't divide by the "phase"
+* histogram since this would cancel in the end anyway.
+* ----------------------------------------------------------------
+*
+hist/create/1d 900 'phase' [nchan] [lo] [hi]
+ntu/proj 900 100.[var]
+hist/create/1d 901 'sigma_avg' [nchan] [lo] [hi]
+*
+* ----------------------------------------------------------------
+* Create sigma-weighted histograms.
+* ----------------------------------------------------------------
+*
+hist/create/1d 1000 'sig_0' [nchan] [lo] [hi]
+hist/create/1d 1001 'sig_e1p' [nchan] [lo] [hi]
+hist/create/1d 1002 'sig_ph1p' [nchan] [lo] [hi]
+hist/create/1d 1003 'sig_th1p' [nchan] [lo] [hi]
+hist/create/1d 1004 'sig_e2p' [nchan] [lo] [hi]
+hist/create/1d 1005 'sig_ph2p' [nchan] [lo] [hi]
+hist/create/1d 1006 'sig_th2p' [nchan] [lo] [hi]
+hist/create/1d 1007 'sig_pxp' [nchan] [lo] [hi]
+hist/create/1d 1008 'sig_phxp' [nchan] [lo] [hi]
+hist/create/1d 1009 'sig_thxp' [nchan] [lo] [hi]
+*
+* ----------------------------------------------------------------
+* Determine the weights.
+* ----------------------------------------------------------------
+*
+ntu/cut $10 sig_0
+ntu/cut $11 sig_e1p
+ntu/cut $12 sig_ph1p
+ntu/cut $13 sig_th1p
+ntu/cut $14 sig_e2p
+ntu/cut $15 sig_ph2p
+ntu/cut $16 sig_th2p
+ntu/cut $17 sig_pxp
+ntu/cut $18 sig_phxp
+ntu/cut $19 sig_thxp
+*
+* ----------------------------------------------------------------
+* Project Ntuples into sigma-weighted histograms.
+* ----------------------------------------------------------------
+*
+ntu/proj 1000 100.[var] $10
+ntu/proj 1001 100.[var] $11
+ntu/proj 1002 100.[var] $12
+ntu/proj 1003 100.[var] $13
+ntu/proj 1004 100.[var] $14
+ntu/proj 1005 100.[var] $15
+ntu/proj 1006 100.[var] $16
+ntu/proj 1007 100.[var] $17
+ntu/proj 1008 100.[var] $18
+ntu/proj 1009 100.[var] $19
+*
+* ----------------------------------------------------------------
+* Create vectors which will contain the fractional derivatives
+* of the cross section with respect to each kinematic variable.
+* ----------------------------------------------------------------
+*
+vector/create vsig_0([nchan])
+vector/create vsig_e1p([nchan])
+vector/create vsig_ph1p([nchan])
+vector/create vsig_th1p([nchan])
+vector/create vsig_e2p([nchan])
+vector/create vsig_ph2p([nchan])
+vector/create vsig_th2p([nchan])
+vector/create vsig_pxp([nchan])
+vector/create vsig_phxp([nchan])
+vector/create vsig_thxp([nchan])
+*
+* ----------------------------------------------------------------
+* Load the fractional derivative vectors with histogram contents.
+* ----------------------------------------------------------------
+*
+hist/get_vect/contents 1000 vsig_0
+hist/get_vect/contents 1001 vsig_e1p
+hist/get_vect/contents 1002 vsig_ph1p
+hist/get_vect/contents 1003 vsig_th1p
+hist/get_vect/contents 1004 vsig_e2p
+hist/get_vect/contents 1005 vsig_ph2p
+hist/get_vect/contents 1006 vsig_th2p
+hist/get_vect/contents 1007 vsig_pxp
+hist/get_vect/contents 1008 vsig_phxp
+hist/get_vect/contents 1009 vsig_thxp
+*
+* ----------------------------------------------------------------
+* Write the vectors so the total errors can be determined from
+* the systerr code.
+* ----------------------------------------------------------------
+*
+vector/write vsig_0 vec0.dat '1(1X,G13.7)' 'OC'
+vector/write vsig_e1p vec1.dat '1(1X,G13.7)' 'OC'
+vector/write vsig_ph1p vec2.dat '1(1X,G13.7)' 'OC'
+vector/write vsig_th1p vec3.dat '1(1X,G13.7)' 'OC'
+vector/write vsig_e2p vec4.dat '1(1X,G13.7)' 'OC'
+vector/write vsig_ph2p vec5.dat '1(1X,G13.7)' 'OC'
+vector/write vsig_th2p vec6.dat '1(1X,G13.7)' 'OC'
+vector/write vsig_pxp vec7.dat '1(1X,G13.7)' 'OC'
+vector/write vsig_phxp vec8.dat '1(1X,G13.7)' 'OC'
+vector/write vsig_thxp vec9.dat '1(1X,G13.7)' 'OC'
+*
+* ----------------------------------------------------------------
+* Produce the average cross section histogram (a diagnostic).
+* ----------------------------------------------------------------
+*
+hist/oper/divide 1000 900 901
+*
+* ----------------------------------------------------------------
+* Get differences between various cross section histograms
+* and the nominal kinematics cross section histogram.
+* ----------------------------------------------------------------
+*
+hist/oper/subtract 1001 1000 2001
+hist/oper/subtract 1002 1000 2002
+hist/oper/subtract 1003 1000 2003
+hist/oper/subtract 1004 1000 2004
+hist/oper/subtract 1005 1000 2005
+hist/oper/subtract 1006 1000 2006
+hist/oper/subtract 1007 1000 2007
+hist/oper/subtract 1008 1000 2008
+hist/oper/subtract 1009 1000 2009
+*
+* ----------------------------------------------------------------
+* Get fractional derivative histograms, which are the above 
+* difference histograms divided by the nominal one.
+* ----------------------------------------------------------------
+*
+hist/oper/divide   2001 1000 3001
+hist/oper/divide   2002 1000 3002
+hist/oper/divide   2003 1000 3003
+hist/oper/divide   2004 1000 3004
+hist/oper/divide   2005 1000 3005
+hist/oper/divide   2006 1000 3006
+hist/oper/divide   2007 1000 3007
+hist/oper/divide   2008 1000 3008
+hist/oper/divide   2009 1000 3009
+*
+* ----------------------------------------------------------------
+* Plot the results.
+* ----------------------------------------------------------------
+*
+zone 3 3
+set tfon 61
+*
+hi/pl 3001
+hi/pl 3002
+hi/pl 3003
+hi/pl 3004
+hi/pl 3005
+hi/pl 3006
+hi/pl 3007
+hi/pl 3008
+hi/pl 3009
+*
+* ----------------------------------------------------------------
+* Produce the total error cross section (this is usually what
+* you're mainly interested in).
+* ----------------------------------------------------------------
+*
+read 'Hit RET for total error (run toterr first)'
+*
+* ----------------------------------------------------------------
+* Create histogram of total fractional error in cross section
+* as computed by mceep_systerr:  ID=902.
+* ----------------------------------------------------------------
+*
+hist/create/1d 902 'sigma total error' [nchan] [lo] [hi]
+vector/read toterr toterr.dat
+hist/put_vect/contents 902 toterr
+zone 1 1
+hi/pl 902
+
+
+
+
+
+
+                      
+

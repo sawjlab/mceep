@@ -1,0 +1,581 @@
+C here is the latest version of the electroproduction code (march 18, 1987)
+C from jim O'Connell
+C
+C*EPCVAX
+C     PROGRAM EPCB
+C  ELECTROPRODUCTION YIELDS
+C  WRITTEN BY J.S.O'CONNELL AND J.W. LIGHTBODY,JR.
+C VAX VERSION
+C  3/6/87
+      SUBROUTINE EPC(E1,PTP,THP,Z,N,IPID,SIGMA)
+C
+      IMPLICIT DOUBLE PRECISION (A-H,O-Z)
+      LOGICAL ATTENUATE
+      DOUBLE PRECISION Z,N,Z1,N1
+      CHARACTER*3 PART
+      COMMON/QD/QDF
+      COMMON/DEL/IP
+      COMMON/SP/IA
+      COMMON/Z_AND_N/ Z1,N1
+C
+      DATA PI/3.1416/,AM/938.28/,AMD/1875.63/,AMP/139.6/
+      ATTENUATE = .FALSE.
+C
+      Z1 = Z
+      N1 = N
+      IA=Z+N
+      IF(IPID .EQ. 3)THEN
+        PART = 'PI-'
+        AN=N/3.
+        IP=2
+      ELSEIF(IPID .EQ. 4)THEN
+        PART = 'P'
+        AN=N/3.+2.*Z/3.
+        IP=1
+      ELSEIF(IPID .EQ. 5)THEN
+        PART = 'PI+'
+        AN=Z/3.
+        IP=2
+      ELSEIF(IPID .EQ. 6)THEN
+        PART = 'N'
+        AN=Z/3.+2.*N/3.
+        IP=-1
+      ELSEIF(IPID .EQ. 7)THEN
+        PART = 'PI0'
+        AN=2.*(N+Z)/3.
+        IP=2
+      ELSE
+        STOP
+      ENDIF
+C
+      IF(ABS(IP).EQ.1)THEN
+        AL = 7.                        !Levinger factor
+        IF(IA .NE. 2) THEN
+          QDF=AL*N*Z/FLOAT(IA)
+        ELSE
+          QDF = 1.
+        ENDIF
+      ENDIF
+C
+      TH=THP
+      IF(ABS(IP).EQ.1)THEN
+        TP=SQRT(PTP**2+AM**2)-AM
+        IF(ATTENUATE)THEN
+          ATTEN = 0.36+0.068*LOG(TP)
+        ELSE
+          ATTEN = 1.0
+        ENDIF
+        AJ=PTP/(TP+AM)
+        CALL DEP(E1,TP,TH,IP,D2QD)
+        D2QD=D2QD*AJ
+        CALL EP(E1,TP,TH,D2QF)
+        D2QF=D2QF*AJ
+      ELSE
+        TP=SQRT(PTP**2+AMP**2)-AMP
+        AJ=PTP/(TP+AMP)
+        D2QD=0.
+        D2QF=0.
+        ATTEN = 1.0
+      ENDIF
+      CALL DELTA(E1,TP,TH,D2DEL)
+      D2DEL=AN*D2DEL
+      D2DEL=AJ*D2DEL
+      SIGMA = (D2QD+D2QF+D2DEL)*1000.*ATTEN             !nb/MeV/c/sr
+CXXX      SIGMA = (D2QD+D2DEL)*1000.*ATTEN              !nb/MeV/c/sr
+      RETURN
+      END
+C
+C
+C*VTP
+      SUBROUTINE VTP(AMT,AM1,EI,W0,TP,TH,GN)
+C  TIATOR-WRIGHT VIRTUAL PHOTON SPECTRUM
+C  PHYS. REV. C26,2349(1982) AND NUC. PHYS. A379,407(1982)
+      IMPLICIT DOUBLE PRECISION (A-H,O-Z)
+      DATA AME/.511/,PI/3.1416/
+      EF0=EI-W0
+      AKI=SQRT(EI**2-AME**2)
+      ARG = EF0**2-AME**2
+      IF(ARG.LT.0.)GOTO 1
+      AKF0=SQRT(ARG)
+      AKP=SQRT(TP**2+2.*AM1*TP)
+      EP=TP+AM1
+      AR=EI+AMT-EP
+      BR=EF0*(AKP*COS(TH)-AKI)/AKF0
+      BRP=(AKF0/EF0)**2*BR
+      A=AME**2-EI*EF0
+      B=AKI*AKF0
+      D=-AME**2*BR*(EI/EF0-1.)/AR
+      AP=A-D
+      BP=B+D
+      AN1=1./137./2./PI*W0**2/AKI**2
+      APB=-AME**2*(AKI-AKF0)**2/(AME**2+EI*EF0+AKI*AKF0)
+      AN1=AN1*B/BP*(AR+BR)/(AR-AP/BP*BR)
+      AN2=1.-2.*A/W0**2
+      AN4=((AP-BP)*(AR+BR)/APB/(AR-BR))
+      IF(AN4.LE.0.)GO TO 1
+      AN2=AN2*LOG(AN4)
+      AN3=-4.*B/W0**2
+      ANE=AN1*(AN2+AN3)
+      D0=AMT+EI-EP+EF0/AKF0*(AKP*COS(TH)-AKI)
+      R=(AMT+W0-EP/AKP*W0*COS(TH))/D0
+      GN=ANE*R/W0
+      RETURN
+    1 GN=0.
+      RETURN
+      END
+C*DEP
+      SUBROUTINE DEP(E1,TP,TH,IP,D2N)
+C  QUASI-DEUTERON CROSS SECTION
+      IMPLICIT DOUBLE PRECISION (A-H,O-Z)
+      COMMON/QD/QDF
+      DATA PI/3.1416/,AM/939./,AMD/1876./
+      PN=SQRT(TP**2+2.*AM*TP)
+      EP=TP+AM
+      CALL KINE(AMD,AM,AM,PN,TH,W0,THC)
+      IF(W0.GE.E1)GO TO 1
+      IF(W0.LE.0.)GO TO 1
+      W0G=W0/1000.
+      CALL SIGD(W0G,THC,IP,DSQD)
+      CALL PART(AMD,AM,AM,PN,TH,AJT,AJW)
+      DSQD=AJT*DSQD
+C  CROSS SECTION IN UB/MEV-SR
+      CALL VTP(AMD,AM,E1,W0,TP,TH,PHI)
+      D2N=QDF*PHI*DSQD
+      RETURN
+    1 D2N=0.
+      RETURN
+      END
+C*SIGD
+      SUBROUTINE SIGD(E,TH,IP,DSQD)
+C  DEUTERON CROSS SECTION
+C  BASED ON FIT OF THORLACIUS & FEARING
+C  PHYS. REV. C33,1830(1986)
+C  ENERGY RANGE 10 - 625 MEV
+C
+C  E[GEV] IN LAB SYSTEM
+C  TH[RAD] & DSQD[UB/SR] IN CENTER-OF-MOMENTUM SYSTEM
+C
+      IMPLICIT DOUBLE PRECISION (A-H,O-Z)
+      DIMENSION C0(8),C1(4),C2(4),C3(4),C4(4)
+      DIMENSION A(0:4),B(4,4)
+      DATA C0/2.61E2,-1.10E2,2.46E1,-1.71E1,5.76E0,-2.05E0,2.67E-1,
+     &     1.13E2/
+      DATA C1/1.68E1,-4.66E1,2.56E0,-4.72E0/
+      DATA C2/-2.03E2,-8.12E1,-4.05E0,-5.99E0/
+      DATA C3/-1.77E1,-3.74E1,-5.07E-1,-5.40E0/
+      DATA C4/-2.05E0,-7.05E0,9.40E-1,-2.05E0/
+      X=COS(TH)
+      IF(E.LE. 0.625)THEN
+C  TEST FOR NEUTRON
+        X=IP*X
+C  COEFICIENTS
+        A(0)=C0(1)*EXP(C0(2)*E)+ C0(3)*EXP(C0(4)*E)
+        A(0)=A(0)+(C0(5)+C0(6)*E)/(1.+C0(8)*(E-C0(7))**2)
+        DSQD=A(0)*P(0,X)
+        DO 2 L=1,4
+          B(1,L)=C1(L)
+          B(2,L)=C2(L)
+          B(3,L)=C3(L)
+    2   B(4,L)=C4(L)
+        DO 1 L=1,4
+          A(L)=B(L,1)*EXP(B(L,2)*E)+ B(L,3)*EXP(B(L,4)*E)
+    1   DSQD=DSQD+A(L)*P(L,X)
+      ELSEIF(E.LT. 0.700)THEN
+        DSQD=.3
+      ELSEIF(E.LT. 0.800)THEN
+        DSQD=.15
+      ELSEIF(E.LT. 0.900)THEN
+        DSQD=.1
+      ELSE
+        DSQD=0.055/(E-0.350)
+      ENDIF
+      RETURN
+      END
+C*LEG
+      FUNCTION P(L,X)
+C  LEGENDRE POLYNOMIALS
+      IMPLICIT DOUBLE PRECISION (A-H,O-Z)
+      IF(L.EQ.0)THEN
+        P=1.
+      ELSEIF(L.EQ.1)THEN
+        P=X
+      ELSEIF(L.EQ.2)THEN
+        P=.5*(3.*X**2-1.)
+      ELSEIF(L.EQ.3)THEN
+        P=.5*(5.*X**3-3.*X)
+      ELSEIF(L.EQ.4)THEN
+        P=1./8.*(35.*X**4-30.*X**2+3.)
+      ELSE
+        P=0.
+      ENDIF
+      RETURN
+      END
+C*DELTA
+      SUBROUTINE DELTA(E1,TP,TH,D2DEL)
+C  PHOTOPRODUCTION OF NUCLEONS AND PIONS VIA DELTA
+      IMPLICIT DOUBLE PRECISION (A-H,O-Z)
+      COMMON/DEL/IP
+      DATA PI/3.1416/,AM/939./,AMP/139./
+      IF(ABS(IP).EQ.1)THEN
+        AM1=AM
+        AM2=AMP
+      ELSE
+        AM1=AMP
+        AM2=AM
+      ENDIF
+      EP=TP+AM1
+      PN=SQRT(EP**2-AM1**2)
+      CALL KINE(AM,AM1,AM2,PN,TH,W,TC)
+      IF(W.LE.0.)GO TO 1
+      IF(W.GE.E1)GO TO 1
+      CALL PART(AM,AM1,AM2,PN,TH,AJT,AJW)
+      CALL SIGMA(W,TC,DSIGG)
+      CALL VTP(AM,AM1,E1,W,TP,TH,PHI)
+      D2DEL=PHI*DSIGG*AJT
+C CROSS SECTION IN UB/MEV-SR
+      RETURN
+    1 D2DEL=0.
+      RETURN
+      END
+C*PART
+      SUBROUTINE PART(AMT,AM1,AM2,PN,TN,AJT,AJW)
+C  PARTIAL DERIVATIVES
+      IMPLICIT DOUBLE PRECISION (A-H,O-Z)
+      DATA PI/3.1416/
+      DT=PI/50.
+      DP=10.
+C  ANGLE
+      TNP=TN+DT
+      TNM=TN-DT
+      CALL KINE(AMT,AM1,AM2,PN,TNP,W,TCP)
+      CALL KINE(AMT,AM1,AM2,PN,TNM,W,TCM)
+      AJT=(COS(TCP)-COS(TCM))/(COS(TNP)-COS(TNM))
+      AJT=ABS(AJT)
+C  ENERGY
+      PNP=PN+DP
+      PNM=PN-DP
+      CALL KINE(AMT,AM1,AM2,PNP,TN,WP,TC)
+      CALL KINE(AMT,AM1,AM2,PNM,TN,WM,TC)
+      AJW=(WP-WM)/(PNP-PNM)
+      AJW=ABS(AJW)
+      RETURN
+      END
+C*KINE
+      SUBROUTINE KINE(AMT,AM1,AM2,PN,TH,W,TC)
+C  COMPUTES CM VARIABLES FROM LAB VARIABLES
+      IMPLICIT DOUBLE PRECISION (A-H,O-Z)
+      EP=SQRT(PN**2+AM1**2)
+      PNT=PN*SIN(TH)
+      PNL=PN*COS(TH)
+      ANUM=PN**2+AM2**2-(AMT-EP)**2
+      DEN=2.*(PNL+AMT-EP)
+      W=ANUM/DEN
+      IF(W.LE.0.)W=0.
+C  INVARIANT MASS
+      WW=SQRT(AMT**2+2.*W*AMT)
+C  CM VARIABLES
+      PCT=PNT
+      B=W/(AMT+W)
+      G=(W+AMT)/WW
+      PCL=G*(PNL-B*EP)
+      PCS=PCL**2+PCT**2
+      PC=SQRT(PCS)
+      CTHC=PCL/PC
+      TC=ACOS(CTHC)
+      RETURN
+      END
+C*SIGMA
+      SUBROUTINE SIGMA(E,THRCM,SIGCM)
+      IMPLICIT DOUBLE PRECISION (A-H,O-Z)
+      GAM=100.
+      PI=ACOS(-1.)
+      IF(E.GT.420.)THEN
+        SIGCM=(1.+420./E)*90./4./PI
+      ELSE
+        SIGCM=360.*(5.-3.*COS(THRCM)**2)/16./PI/(1.+(E-320.)**2/GAM**2)
+      ENDIF
+      RETURN
+      END
+C*EP
+      SUBROUTINE EP(E1,TP,THP,DSEP)
+C  ELECTRO PROTON PRODUCTION CROSS SECTIONS
+      IMPLICIT DOUBLE PRECISION (A-H,O-Z)
+      COMMON/PCOMM/PH(10),WPH(10)
+      DATA AML/.511D0/,PI/3.14159265D0/
+      CALL GAUSAB(10,PH,WPH,0.D0,2.D0*PI,PI)
+      AK=SQRT(E1**2-AML**2)
+      CALL SEP(AK,TP,THP,DSEP)
+      DSEP=DSEP*1.E4
+C  CROSS SECTION IN UB/MEV-SR
+      END
+C*DOT3
+      FUNCTION DOT3(V,U)
+      IMPLICIT DOUBLE PRECISION (A-H,O-Z)
+      DIMENSION V(3),U(3)
+      DOT3=0.
+      DO 1 I=1,3
+    1 DOT3=DOT3+V(I)*U(I)
+      RETURN
+      END
+C*CROSS
+      SUBROUTINE CROSS(V,U,W)
+      IMPLICIT DOUBLE PRECISION(A-H,O-Z)
+      DIMENSION V(3),U(3),W(3)
+      W(1)=V(2)*U(3)-V(3)*U(2)
+      W(2)=V(3)*U(1)-V(1)*U(3)
+      W(3)=V(1)*U(2)-V(2)*U(1)
+      RETURN
+      END
+C*GAUSAB
+C   SUBROUTINE GAUSAB
+C
+      SUBROUTINE GAUSAB(N,E,W,A,B,C)
+      IMPLICIT DOUBLE PRECISION (A-H,O-Z)
+      DIMENSION E(1),W(1)
+      DATA PI/3.141592653589793238462643D0/,EPS/1.D-16/
+      IF(A.GE.C.OR.C.GE.B)STOP
+C           STOPS PROGRAM IF A, C, B ARE OUT OF SEQUENCE
+      AL=(C*(A+B)-2*A*B)/(B-A)
+      BE=(A+B-2*C)/(B-A)
+      M=(N+1)/2
+      DN=N
+      DO 5 I=1,M
+        DI=I
+        X=PI*(4.D0*(DN-DI)+3.D0)/(4.D0*DN+2.D0)
+        XN=(1.D0-(DN-1.D0)/(8.D0*DN*DN*DN))*COS(X)
+        IF(I.GT.N/2) XN=0
+        DO 3 ITER=1,10
+          X=XN
+          Y1=1.D0
+          Y=X
+          IF(N.LT.2) GO TO 2
+          DO 1 J=2,N
+            DJ=J
+            Y2=Y1
+            Y1=Y
+    1     Y=((2.D0*DJ-1.D0)*X*Y1-(DJ-1.D0)*Y2)/DJ
+    2     CONTINUE
+          YS=DN*(X*Y-Y1)/(X*X-1.D0)
+          H=-Y/YS
+          XN=X+H
+          IF(ABS(H).LT.EPS) GO TO 4
+    3   CONTINUE
+    4   E(I)=(C+AL*X)/(1.D0-BE*X)
+        E(N-I+1)=(C-AL*X)/(1.D0+BE*X)
+        GEW=2.D0/((1.D0-X*X)*YS*YS)
+        W(I)=GEW*(AL+BE*C)/(1.D0-BE*X)**2
+        W(N-I+1)=GEW*(AL+BE*C)/(1.D0+BE*X)**2
+    5 CONTINUE
+      RETURN
+      END
+C*VECT
+      SUBROUTINE VECT(THP,THE,PHI,P,AK1,AK2)
+C  CARTESIAN COMPONENTS OF ELECTRON AND PROTON VECTORS
+      IMPLICIT DOUBLE PRECISION (A-H,O-Z)
+      COMMON/V/AK1V(3),AK2V(3),QV(3),PV(3),PP(3)
+      PV(1)=P*SIN(THP)
+      PV(2)=0.
+      PV(3)=P*COS(THP)
+      AK1V(1)=0.
+      AK1V(2)=0.
+      AK1V(3)=AK1
+      AK2V(1)=AK2*SIN(THE)*COS(PHI)
+      AK2V(2)=AK2*SIN(THE)*SIN(PHI)
+      AK2V(3)=AK2*COS(THE)
+      QV(1)=AK1V(1)-AK2V(1)
+      QV(2)=AK1V(2)-AK2V(2)
+      QV(3)=AK1V(3)-AK2V(3)
+      PP(1)=PV(1)-QV(1)
+      PP(2)=PV(2)-QV(2)
+      PP(3)=PV(3)-QV(3)
+      RETURN
+      END
+C*AMAG
+      FUNCTION AMAG(V)
+      IMPLICIT DOUBLE PRECISION (A-H,O-Z)
+      DIMENSION V(3)
+      AMAG=0.
+      DO 1 I=1,3
+    1 AMAG=AMAG+V(I)**2
+      AMAG=SQRT(AMAG)
+      RETURN
+      END
+C*LEPT
+      SUBROUTINE LEPT(E1,E2,AK1,AK2,AML,QS,QUS,THE,V)
+C  LEPTON FACTORS FOR COINCIDENCE CROSS SECTION
+      IMPLICIT DOUBLE PRECISION (A-H,O-Z)
+      DIMENSION V(5)
+      V(1)=(QUS/QS)**2*(E1*E2+AK1*AK2*COS(THE)+AML**2)
+      X=AK1*AK2*SIN(THE)
+      V(2)=X**2/QS+QUS/2.
+      V(3)=QUS/QS*X/SQRT(QS)*(E1+E2)
+      V(4)=X**2/QS
+      V(5)=0.
+      RETURN
+      END
+C*D4S
+      SUBROUTINE D4S(AK1,AK2,THE,P,PP,THQP,CPHIP,DSIG)
+C  FULLY DIFFERENTIAL CROSS SECTION
+      IMPLICIT DOUBLE PRECISION (A-H,O-Z)
+      DOUBLE PRECISION Z1,N1
+      COMMON/Z_AND_N/ Z1,N1
+      DIMENSION V(5),W(5)
+      DATA AM/939./,AML/.511/,PI/3.14159265/,A/855./
+      QS=AK1**2+AK2**2-2.*AK1*AK2*COS(THE)
+      E1=SQRT(AK1**2+AML**2)
+      E2=SQRT(AK2**2+AML**2)
+      QUS=2.*(E1*E2-AK1*AK2*COS(THE)-AML**2)
+      SM=2.*(1.44)**2/QUS**2*AK2/AK1
+      PS=AM*P
+      FNS=1./(1.+QUS/A**2)**4
+      CALL LEPT(E1,E2,AK1,AK2,AML,QS,QUS,THE,V)
+      CALL FORM(Z1,N1,QS,QUS,P,THQP,CPHIP,W)
+      SUM=0.
+      DO 1 I=1,5
+    1 SUM=SUM+V(I)*W(I)
+      DSIG=SM*PS*FNS*SUM*SGSL(PP)
+      RETURN
+      END
+C*STHE
+      SUBROUTINE STHE(D2S)
+C  INTEGRAL OVER ELECTRON POLAR ANGLE
+      IMPLICIT DOUBLE PRECISION (A-H,O-Z)
+      COMMON/S/ AK1,AK2,THE,P,THP
+      COMMON/E/TH1(12),WT1(12),TH2(12),WT2(12)
+      COMMON/E1/TH3(24),WT3(24)
+      D2S1=0.
+      DO 1 I=1,12
+        THE=TH1(I)
+        CALL SPHI(D3S)
+    1 D2S1=D2S1+D3S*WT1(I)*SIN(THE)
+      D2S2=0.
+      DO 2 I=1,12
+        THE=TH2(I)
+        CALL SPHI(D3S)
+    2 D2S2=D2S2+D3S*WT2(I)*SIN(THE)
+      D2S3=0.
+      DO 3 I=1,24
+        THE=TH3(I)
+        CALL SPHI(D3S)
+    3 D2S3=D2S3+D3S*WT3(I)*SIN(THE)
+      D2S=D2S1+D2S2+D2S3
+      RETURN
+      END
+C*SPHI
+      SUBROUTINE SPHI(D3S)
+C  INTEGRATE OVER ELECTRON AZIMUTHAL ANGLE
+      IMPLICIT DOUBLE PRECISION (A-H,O-Z)
+      COMMON/S/ AK1,AK2,THE,P,THP
+      COMMON/V/AK1V(3),AK2V(3),QV(3),PV(3),PP(3)
+      COMMON/PCOMM/PH(10),WPH(10)
+      DIMENSION QXP(3),AK1X2(3)
+      D3S=0.
+      DO 1 I=1,10
+        PHI=PH(I)
+        CALL VECT(THP,THE,PHI,P,AK1,AK2)
+        CALL CROSS(QV,PV,QXP)
+        CALL CROSS(AK1V,AK2V,AK1X2)
+C  PROTON THETA
+        CTHEP=DOT3(PV,QV)/AMAG(PV)/AMAG(QV)
+        THQP=ACOS(CTHEP)
+C  PROTON PHI
+        CPHIP=DOT3(QXP,AK1X2)/AMAG(QXP)/AMAG(AK1X2)
+        PPM=AMAG(PP)
+        CALL D4S(AK1,AK2,THE,P,PPM,THQP,CPHIP,DSIG)
+    1 D3S=D3S+DSIG*WPH(I)
+      RETURN
+      END
+C*FORM
+      SUBROUTINE FORM(Z1,N1,QS,QUS,P,THQP,CPHIP,W)
+C  NUCLEAR FORM FACTORS
+      IMPLICIT DOUBLE PRECISION (A-H,O-Z)
+      DOUBLE PRECISION Z1,N1,ZZ,NN
+      COMMON/DEL/IP
+      DIMENSION W(5)
+      DATA AM/939./,UP/2.79/,UN/-1.91/
+      IF(IP.EQ.1)THEN
+        ZZ=Z1
+        NN=0.
+      ELSEIF(IP.EQ.-1)THEN
+        ZZ=0.
+        NN=N1
+      ELSE
+        ZZ=0.
+        NN=0.
+      ENDIF
+      Y=P/AM*SIN(THQP)
+      W(1)=ZZ
+      W(2)=ZZ*Y**2
+      W(2)=W(2)+(ZZ*UP**2+NN*UN**2)*QS/2./AM**2
+      W(3)=-2.*ZZ*Y*CPHIP
+      W(4)=ZZ*Y**2*(2.*CPHIP**2-1.)
+      W(5)=0.
+      RETURN
+      END
+C*SEP
+      SUBROUTINE SEP(AK,TP,THPP,D2S)
+      IMPLICIT DOUBLE PRECISION (A-H,O-Z)
+      COMMON/S/AK1,AK2,THE,P,THP
+      COMMON/E/TH1(12),WT1(12),TH2(12),WT2(12)
+      COMMON/E1/TH3(24),WT3(24)
+      DATA AM/939.D0/,AML/.511D0/,BE/16.D0/,PI/3.1416D0/
+      THP=THPP
+      AK1=AK
+      AK2=AK1-TP-BE
+C  GAUSSIAN POINTS FOR THE
+      THEMAX=AML*(AK1-AK2)/AK1/AK2
+      CALL GAUSAB(12,TH1,WT1,0.D0,2.D0*THEMAX,THEMAX)
+      CALL GAUSAB(12,TH2,WT2,2.D0*THEMAX,100.D0*THEMAX,10.D0*THEMAX)
+      A3=100.D0*THEMAX
+      C3=A3+(PI-A3)/10.D0
+      CALL GAUSAB(24,TH3,WT3,A3,PI,A3+(PI-A3)/10.D0)
+      P=SQRT(2.D0*AM*TP)
+      CALL STHE(D2S)
+      IF(AK2.LE.0.)D2S=0.D0
+      RETURN
+      END
+C*SGSL
+      FUNCTION SGSL(P)
+C  P INTEGRAL OVER SGSL NORMALIZED TO 1/4PI
+      IMPLICIT DOUBLE PRECISION (A-H,O-Z)
+      COMMON/SP/IA
+      IF(IA.EQ.2)THEN
+C  BEGIN 2-H
+        PP=P/197.3
+        SGS=3.694-7.428*PP-2.257*PP**2
+        SGS=SGS+3.618*PP**3-1.377*PP**4+.221*PP**5-.103*PP**6
+        IF(SGS.LT.-293.)GO TO 1
+        SGS=EXP(SGS)
+        SGS=SGS/.18825/4./3.1416/(197.3)**3
+        SGSL=SGS/1.
+      ELSEIF(IA.EQ.3)THEN
+C  BEGIN 3-HE
+        IF(-(P/33)**2.LT.-293.)GO TO 1
+        SGS=2.4101E-6*EXP(-P/33)
+        SGS=SGS-1.4461E-6*EXP(-(P/33)**2)
+        SGS=SGS+1.6871E-10*EXP(-(P/493)**2)
+        SGSL=SGS/2.
+      ELSEIF(IA.EQ.4)THEN
+C   BEGIN 4-HE
+        IF(-(P/113.24)**2.LT.-293.)GO TO 1
+        SGS=1.39066E-6*EXP(-(P/113.24)**2)
+        SGS=SGS+3.96476E-9*EXP(-(P/390.75)**2)
+        SGSL=SGS/2.
+        SGSL=SGSL/2./3.1416
+      ELSEIF(IA.EQ.12)THEN
+C  BEGIN 12-C
+        IF(-(P/127)**2.LT.-293.)GO TO 1
+        SGS=1.7052E-7*(1.+(P/127)**2)*EXP(-(P/127)**2)
+        SGS=SGS+1.7052E-9*EXP(-(P/493)**2)
+        SGSL=SGS/6.
+      ELSE
+C  BEGIN 16-O
+        IF(-(P/120)**2.LT.-293.)GO TO 1
+        SGS=3.0124E-7*(1.+(P/120)**2)*EXP(-(P/120)**2)
+        SGS=SGS+1.1296E-9*EXP(-(P/493)**2)
+        SGSL=SGS/8.
+      ENDIF
+      RETURN
+    1 SGSL=0.
+      RETURN
+      END

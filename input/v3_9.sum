@@ -1,0 +1,338 @@
+
+
+                      MCEEP PROGRAM VERSION NUMBER:    3.90
+
+
+
+                      I N P U T     S U M M A R Y 
+
+
+ Comments:  d(e,e'p)n with JLAB Hall A HRS                                      
+            50 uA on 15 cm LD2                                                  
+            External radiation included                                         
+                                                                                
+                                                                                
+
+
+ Input file: v3_9.inp
+
+ Number of iterations for RANGES preprocessor: 
+          Theta_p:                  4
+          Phi_p:                    4
+          Theta_e:                  4
+          Phi_e:                    4
+          e- momentum:              4
+          hadron momentum:          4
+
+
+ INTERNAL BREMSSTRAHLUNG INCLUDED, CUTOFF =     1.000 MeV 
+     Multiphoton correction included 
+
+
+ BOUND STATE    E_m =      2.200 MeV 
+
+ Physics Option selected:     200
+ Spectral Function:            10
+ (e,e'p) selected 
+
+
+ MASSES: 
+          Target mass      =     1875.628 MeV 
+          Ejectile mass    =      938.280 MeV 
+          Ejectile charge  =   1
+
+
+ TARGET PARAMETERS: 
+          Target A       =      2
+          Target Z       =      1
+          Target Density =     0.1690 g/cm^3 
+          Target Model   =      2
+          Target Angle   =       0.00 deg 
+          # Foils        =      1
+
+          Foil      Start (m)      End (m) 
+          ----      ---------      ------- 
+            1       -0.0750         0.0750
+
+ Energy loss included 
+
+
+ KINEMATICS      Momentum          Phi            Theta 
+                   MeV/c           deg             deg  
+                 --------          ---            ----- 
+ Beam:           1653.000         0.000           0.000
+ Electron:       1218.000        37.000           0.000
+ Hadron:         1000.000       -47.100           0.000
+
+
+
+
+ ACCEPTANCES     Momentum           Phi        Theta      Aperture 
+                   +/- %             mr          mr        Shape   
+                 --------           ---        -----      -------- 
+ Electron:      4.5   -4.5         60.00      130.00         R
+ Hadron:        4.5   -4.5         60.00      130.00         R
+
+
+
+          Luminosity     =      0.238E+03 [10^(36) cm^-2 sec^-1] 
+          Beam time      =          1.000 hrs 
+          Spectr. factor =          1.000
+
+
+
+               DRIFTS TO APERTURES 
+               ------ -- --------- 
+          Drift to E aperture =               1.109  m 
+          Drift to P aperture =               1.100  m 
+
+
+
+                              BEAM PARAMETERS 
+                              ---- ---------- 
+          Polarization                 =                0.800
+          Eff. vertical spread at tgt. =                0.000 mm 
+          Total dispersion at tgt.     =                0.000 %  
+          Duty factor                  =                0.000 %  
+          ToF window                   =                0.000 nsec 
+
+          FWHM for               X_B   =                0.000 cm 
+                                 Y_B   =                0.000 cm 
+                                 PH_B  =                0.000 mr 
+                                 TH_B  =                0.000 mr 
+                                 E0    =                0.000 %  
+
+          Offset for             X_B   =                0.000 cm 
+                                 Y_B   =                0.000 cm 
+                                 PH_B  =                0.000 mr 
+                                 TH_B  =                0.000 mr 
+                                 E0    =                0.000 %  
+
+          RASTER          Shape        =               R
+                          Full-width X =              0.00580 m  
+                          Full-width Y =              0.00450 m  
+
+
+
+------------------------------------------------------------------------
+  ELECTRON ARM SPECTROMETER ELEMENTS: 
+
+                Bend-plane angle =   -90.00 deg 
+                Coordinates of Object point in LAB system (cm): 
+                         X:     0.000
+                         Y:     0.000
+                         Z:     0.000
+                Apply to LAB coordinates?  Yes 
+
+ Type/ID   Affects   X-Var Y-Var   Cut ranges/Axes   Value    Filename
+ -------   -------   ----- -----   ---------------   -----    --------
+  NTU  1                                              0.000   v3_9_etgt1.ntu
+  DFT                                                110.90
+  CUT      All hist    X          -6.09  to    6.09
+  CUT      All hist    Y          -3.15  to    3.15
+  DFT                                                  8.00
+  CUT      All hist    X          -6.49  to    6.49
+  CUT      All hist    Y          -3.34  to    3.34
+  DFT                                               -118.90
+  HRSE     Kin. bin                                  TTTTT
+  NTU  2                                             45.000   v3_9_efp.ntu
+  TOF                                                 23.40
+  DFT                                                -30.00
+  RES      Kin. bin  Theta                            0.558
+  RES      Kin. bin   Phi                             0.558
+  DFT                                                 15.00
+  RES      Kin. bin  Theta                            0.233
+  RES      Kin. bin   Phi                             0.233
+  DFT                                                 15.00
+  TRK                                                         hrs_vdc2.par
+  HRIE     Kin. bin
+  NTU  3                                              0.000   v3_9_etgt2.ntu
+
+
+------------------------------------------------------------------------
+  HADRON ARM SPECTROMETER ELEMENTS: 
+
+                Bend-plane angle =   -90.00 deg 
+                Coordinates of Object point in LAB system (cm): 
+                         X:     0.000
+                         Y:     0.000
+                         Z:     0.000
+                Apply to LAB coordinates?  Yes 
+
+ Type/ID   Affects   X-Var Y-Var   Cut ranges/Axes   Value    Filename
+ -------   -------   ----- -----   ---------------   -----    --------
+  DFT                                                110.00
+  CUT      All hist    X          -6.09  to    6.09
+  CUT      All hist    Y          -3.15  to    3.15
+  DFT                                                  8.00
+  CUT      All hist    X          -6.49  to    6.49
+  CUT      All hist    Y          -3.34  to    3.34
+  DFT                                               -118.00
+  HRSH     Kin. bin                                  TTTTT
+  TOF                                                 23.40
+  DFT                                                -30.00
+  RES      Kin. bin  Theta                            0.932
+  RES      Kin. bin   Phi                             0.932
+  DFT                                                 15.00
+  RES      Kin. bin  Theta                            0.390
+  RES      Kin. bin   Phi                             0.390
+  DFT                                                 15.00
+  TRK                                                         hrs_vdc2.par
+  HRIH     Kin. bin
+
+
+------------------------------------------------------------------------
+                  WIRE CHAMBER PARAMETERS FOR TRK OPTION 
+
+ IARM   <x|delta>   Offset   Coord_off  Chmbr_off  Resol.   # Chmbr
+         (cm/%)    (mr,cm,%)                      FWHM-cm
+ ----   ---------   ------   ---------  ---------  -------  -------
+   1      12.38      0.00         1          1      0.02        2
+   2      12.38      0.00         1          1      0.02        2
+
+
+           IARM    Chamber #  Location   Tilt angle  Wire angle  Sigma Mscat
+                                (cm)       (deg)        (deg)       (mr)
+           ----    ---------  ---------  ----------  ----------  -----------
+             1         1        0.00      -45.00        45.00         0.47
+                       2       50.00      -45.00        45.00         0.27
+             2         1        0.00      -45.00        45.00         0.79
+                       2       50.00      -45.00        45.00         0.44
+
+
+                 TRANSPORT HISTOGRAM LIMITS, ETC. 
+
+  ID  Reaction     X or Y   Minimum  Maximum  # channels  TRANSPORT Cut Index 
+  --  --------     ------   -------  -------  ----------  ------------------- 
+   1 Cts_eeX 
+   2 Cts_eeX 
+   3 Cts_eeX 
+                                GLOBAL CUTS 
+
+               Variable              Xmin           Xmax
+               --------              ----           ----
+               PRMAG              0.0000E+00     0.1000E+03
+
+
+                         HISTOGRAM SPECIFIC CUTS 
+
+          Cut Index      Variable            Min            Max
+          ---------      --------            ---            ---
+              1          OMEGA            0.4100E+03     0.4600E+03
+              2          QMAG             0.9750E+03     0.1025E+04
+
+
+          K I N E M A T I C S      H I S T O G R A M S 
+          -------------------      ------------------- 
+
+
+  ID  Type   Reaction      X Variable  Y Variable  File name       Cuts
+  --  ----   --------      ----------  ----------  ---------       ----
+   1   NTU   Cts_eeX                               v3_9.ntu
+   2   P1D   Phase_Sp        PRMAG                 v3_9_phsp_pr.top
+   3   P1D   Cts_eeX         PRMAG                 v3_9_yield_pr.top
+   4   P1D   Sig_eeX         PRMAG                 v3_9_sig_pr.top
+   5   P1D   Sig_eeX         PRMAG                 v3_9_sig_pr_c.t  1   2
+   6   P2D   Cts_eeX         OMEGA      QMAG       v3_9_yield_wq.top
+   7   SCA                   OMEGA      QMAG       v3_9_phsp_wq.top
+   8   P1D   Cts_T_S         PF_P_I                v3_9_tpoly_pf.top
+   9   P1D   Pol_T_S         PF_P_I                v3_9_tpol_pf.top
+  10   P1D   Cts_eeX         TOF_REL               v3_9_tof.top
+
+
+                     HISTOGRAM LIMITS, ETC. 
+
+  ID  X or Y     Minimum    Maximum  # channels    Scale     Offset 
+  --  ------     -------    -------  ----------    -----     ------ 
+   2     X     -0.172E+02  0.198E+03      50     0.100E+01  0.000E+00
+   3     X     -0.172E+02  0.198E+03      50     0.100E+01  0.000E+00
+   4     X     -0.172E+02  0.198E+03      50     0.100E+01  0.000E+00
+   5     X     -0.172E+02  0.198E+03      50     0.100E+01  0.000E+00
+   6     X      0.399E+03  0.471E+03      25     0.100E+01  0.000E+00
+         Y      0.947E+03  0.106E+04      25     0.100E+01  0.000E+00
+   7     X      0.399E+03  0.471E+03             0.100E+01  0.000E+00
+         Y      0.947E+03  0.106E+04             0.100E+01  0.000E+00
+   8     X      0.942E+03  0.105E+04      50     0.100E+01  0.000E+00
+   9     X      0.942E+03  0.105E+04      50     0.100E+01  0.000E+00
+  10     X     -0.500E+02 -0.100E+02      50     0.100E+01  0.000E+00
+
+
+------------------------------------------------------------------------
+   ******************************************************************
+------------------------------------------------------------------------
+
+                      O U T P U T     S U M M A R Y 
+
+
+
+               Kinematical quantities (after global cuts)
+
+   Variable          Central   Average  Centroid   Minimum   Maximum Units
+   --------          -------   -------  --------   -------   ------- -----
+ Scatt. angle         37.000    36.970    36.945    34.930    39.083  deg
+ Omega               435.000   449.117   445.568   409.684   489.754  MeV
+ Q-vector           1000.031  1001.135  1000.098   960.805  1046.240  MeV/c
+ Q_mu^2                0.811     0.801     0.802     0.704     0.902  GeV/c^2
+ Phi_Q               -47.138   -46.287   -46.495   -48.524   -43.728  deg
+ Theta_Q               0.000     0.108     0.047    -4.082     4.157  deg
+ X                     0.993     0.952     0.960     0.769     1.147
+ Long. Pol.            0.784     0.781     0.782     0.758     0.800
+
+ P_f                1000.000   997.128   995.341   955.016  1044.967  MeV/c
+ P_recoil              0.655    55.781    39.604     1.986    99.966  MeV/c
+ Theta_pq              0.038     2.679     1.837     0.011     5.907  deg
+ Phi_x                 0.000   185.644   182.328     0.030   359.988  deg
+ M_miss                2.014    16.253    14.898     6.493    82.589  MeV
+ W                     2.083     2.098     2.095     2.044     2.155  GeV
+ Theta_CM              0.083     5.904     4.059     0.026    12.845  deg
+
+
+                              STATISTICS 
+                              ---------- 
+               NOTE: if energy loss calc. performed 
+                     then acceptances initially enlarged. 
+
+
+
+ # tries:                                          100000
+ # passed global cuts + HRS apertures:               7252
+
+ (e,e'N) rate after cuts:                          0.16783E+04 sec^-1
+ sigma after global cuts:                0.91507E-08 fm^2/MeV^2/sr^2      
+
+ Bad interpolation (extrapolation):                     0
+ Expon. interpolation failures:                         0
+ Spectral function out-of-range:                        0
+
+
+              TRANSPORT HISTOGRAM SUMMARY 
+
+  ID       OOB        Sum           X-cent.        Y-cent. 
+  --       ---        ---           -------        ------- 
+
+
+              KINEMATICS HISTOGRAM SUMMARY 
+
+  ID       OOB        Sum           X-cent.        Y-cent. 
+  --       ---        ---           -------        ------- 
+   2         0      0.660E+15      0.598E+02
+   3         0      0.604E+07      0.396E+02
+   4         0      0.527E-06      0.182E+02
+   5         0      0.702E-06      0.210E+02
+   6      1123      0.552E+07      0.443E+03      0.999E+03
+   8         0     -0.141E+07      0.995E+03
+   9         0     -0.973E+01      0.999E+03
+  10         0      0.604E+07     -0.292E+02
+
+
+
+          ENERGY LOSS FROM OTHER THAN TARGET MATERIAL 
+          ------------------------------------------- 
+          Beam:                            0.0395 MeV
+          Scatt. Electron (sidewall):      0.7334 MeV
+          Hadron          (sidewall):      0.7715 MeV
+          Scatt. Electron   (endcap):      0.6263 MeV
+          Hadron            (endcap):      0.7026 MeV
+
+
+

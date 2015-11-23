@@ -1,0 +1,35 @@
+50000                                       # tries
+4,4,4,4,4,4                                for default ranges
+938.2796,1,2.2                             m_eject,z_eject,em_bound
+1653.,0.,0.,1218.,37.0,0.,1000.,-47.1,0.   kinematics
+4.5,-4.5,4.5,-4.5                          momentum acceptances
+'R','R',60.,130.,60.,130.                  nominal solid angles
+126.75,1.,1.                               luminosity,time,spec_fac
+45.,2.2,2.2                                for singles only
+2.,1.,0.169,2,1                            targ: a,z,dens,targ_mod,eloss_mod
+-0.075,0.075                               targ: cell start/end
+1.109,1.100                                drift to aperture - nom. sld. ang.
+0.8,0.,0.,0.,0.                            beam: pol, vert, disp, df, tof_win
+0.,0.,0.,0.,0.                             beam: FWHM   in cm,cm,mr,mr,%
+0.,0.,0.,0.,0.                             beam: offset in cm,cm,mr,mr,%
+'R',0.0058,0.0045                          beam: raster shape, X size, Y size
+'E',T,7,-90.,0.,0.,0.                     ELECTRON ARM
+'DFT',110.9                                  drift to front face of coll.
+'CUT','G','R',-6.09,6.09,1                   cut on x_coll
+'CUT','G','R',-3.15,3.15,3                   cut on y_coll
+'DFT', 8.00                                  drift to back face of coll.
+'CUT','G','R',-6.49,6.49,1                   cut on x_coll
+'CUT','G','R',-3.34,3.34,3                   cut on y_coll
+'DFT',-118.9                                 drift back to target
+'P',T,7,-90.,0.,0.,0.                     HADRON ARM
+'DFT',110.0                                  drift to front face of coll.
+'CUT','G','R',-6.09,6.09,1                   cut on x_coll
+'CUT','G','R',-3.15,3.15,3                   cut on y_coll
+'DFT',8.00                                   drift to back face of coll.
+'CUT','G','R',-6.49,6.49,1                   cut on x_coll
+'CUT','G','R',-3.34,3.34,3                   cut on y_coll
+'DFT',-118.0                                 drift back to target
+0                                          # global cuts
+0                                          # specific cuts
+1                                          # plots
+'NTU',1,7,26,62,64,66,72,74,76,'trvec.ntu'

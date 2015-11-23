@@ -1,0 +1,221 @@
+#!/usr/bin/perl
+# program aren_response.prl
+#
+# Program to strip the unpolarized responses from Arenhovel's outputs
+#
+# Takes Arenhovels file name as a command line input
+#
+# Constructs output file names as follows:
+# calc_energy_eprime_theta.dat
+# Where Calc is chosen from the set
+# norm
+# pwba
+# normMEC
+# normMECIC
+# normRC
+# pwbaRC
+# full
+# The other quantities are the usual values that define electron
+# scattering kinematics
+# energy is beam energy in MeV
+# eprime is scattered energy in MeV
+# theta is the electron scattering angle in 0.1 deg
+#
+# JHM 1998
+# modified NoV 2000
+#
+# PEU 11/07/00:
+# attach cryptic index to beginning of filename defining type of
+# calculation for ease of parsing by separate Fortran subroutine
+# within MCEEP:
+#
+#         1_pwba
+#         2_norm
+#         3_normMEC
+#         4_normMECIC
+#         5_pwbaRC
+#         6_normRC
+#         7_full
+#
+
+use strict;
+use FileHandle;
+my $MAX = 180;  # assume that we are not given more than 180 cm angle points
+my @calcnames = ('2_norm','1_pwba','3_normMEC','4_normMECIC','6_normRC','5_pwbaRC','7_full'); 
+my %outfiles;
+my (%thetacm, %dsdo, %fl, %ft, %flt, %ftt, %fltprime, %ang_count);
+my ($energy, $e_prime, $theta_e);
+my (@e_str, @ang_str);
+my ($ok, $calcnum);
+my @data;
+my $kin_str;
+my @found;
+
+# allocate memory for the big associative arrays
+# I will let the others grow dynamically
+foreach my $calc (@calcnames){
+    $thetacm{$calc}[$MAX] = 0;
+    $dsdo{$calc}[$MAX] = 0;
+    $fl{$calc}[$MAX] = 0;
+    $ft{$calc}[$MAX] = 0;
+    $flt{$calc}[$MAX] = 0;
+    $ftt{$calc}[$MAX] = 0;
+    $fltprime{$calc}[$MAX] = 0;
+}
+
+# get the name of the file containing Arenhoevels output
+# from the command line, die if its done wrong
+my $AREN = $ARGV[0];
+if(!scalar($AREN)){
+    print " usage: aren_response.prl arenhovels_output_filename \n";
+    die;
+}
+else{
+    printf " Processing data from %s \n", $AREN;
+}
+#open the file
+my $aren_fh = new FileHandle;
+if(!$aren_fh->open($AREN)){
+    printf " Unable to open %s \n", $AREN;
+    die;
+}
+# suck the entire file into @data
+
+@data = <$aren_fh>;
+
+$aren_fh->close(); # close the input file
+
+find_kin();     # look for kinematic info
+find_starts();       # find the line numbers where each calc starts
+my $calculation = 0;
+foreach my $calc (@calcnames){
+    # here we assume that I have the order of the calculations correct
+    # because I match a begining line number with a calc string name
+    get_calc($found[$calculation],$calc);
+    write_out($calc);
+   $calculation++;
+}
+
+###############################################################################
+sub write_out()
+{
+# this one writes the sstufff to the output files 
+#
+   my ($calc) = @_;
+    my  $fh = new FileHandle;
+    
+    printf" writing to %s \n",$outfiles{$calc};
+    $fh->open($outfiles{$calc},"w");
+
+    printf $fh "%10.5e %10.5e %8.4e \n", $energy , $e_prime, $theta_e;
+    printf $fh "%d \n", $ang_count{$calc};
+    print $fh "!! thetacm    dsdo    fl    ft    flt    ftt    fltprime \n";  
+    my $i = 0;
+    while ( $i < $ang_count{$calc}){
+	printf $fh " %6.2f   %10.4e   %10.4e   %10.4e   %10.4e   %10.4e   %10.4e \n",
+	$thetacm{$calc}[$i],$dsdo{$calc}[$i],$fl{$calc}[$i],
+	$ft{$calc}[$i],$flt{$calc}[$i],$ftt{$calc}[$i],$fltprime{$calc}[$i];
+	$i++;
+    }
+    $fh->close();
+}
+
+#################################################################################
+
+sub get_calc()
+{
+# goes through the file and starting at a predetrmined line
+# grabs all lines with 7 entries, these should be the unpolarized
+# response functions 
+# angle, dsdo, fl, ft, flt, ftt, flt'
+
+    my ($begin, $calc) = @_;
+    my $lc = 0;
+    my $line;
+    my $end = 100;    # just a trick to stop grabbing after I have found what I want
+    my @str;
+    $ang_count{$calc} = 0;
+
+    printf " calculation %s begins at line %d \n",$calc,$begin;
+    foreach $line (@data) {
+	if( $lc >= $begin) {
+	    @str = split(' ',$line);
+	    if((scalar(@str) == 7) && ($end > 0)){
+		$thetacm{$calc}[$ang_count{$calc}] = $str[0];
+		$dsdo{$calc}[$ang_count{$calc}] = $str[1];
+		$fl{$calc}[$ang_count{$calc}] = $str[2];
+		$ft{$calc}[$ang_count{$calc}] = $str[3];
+		$flt{$calc}[$ang_count{$calc}] = $str[4];
+		$ftt{$calc}[$ang_count{$calc}] = $str[5];
+		$fltprime{$calc}[$ang_count{$calc}] = $str[6];
+		$ang_count{$calc}++;
+	    }
+	    else{
+		$end = -100;
+	    }
+        }
+	$lc++;
+	}    
+    printf " Found %d center mass angles for calculation %s \n", $ang_count{$calc}, $calc;
+}
+
+
+######################################################################################
+
+sub find_starts(){
+my $line;
+my $lc = 0;
+my $calcnum = 0;
+# find the lines where each of the cross sections start
+    foreach $line (@data){
+	if($line =~ m/STRUCTURE/){
+	    $found[$calcnum] = $lc +4;  #data start4 lines after line with STRUCTURE
+	    $calcnum++;
+	    $lc++;
+	}
+	else{
+	    $lc++;
+	}
+    }
+printf " Found %d calculations in file \n",$calcnum;
+
+}    
+
+###################################################################################### 
+
+sub find_kin()
+{
+# this routine finds the relevant kinematic info in the file
+# and extracts it into variables
+# finally forms the output file names
+#
+    my $textline;
+    foreach $textline (@data){
+	if($textline =~ m/ELECTRON/){  # line with beam energy and eprime
+	    @e_str = split(' ',$textline);
+	}
+	if($textline =~ m/SCATTERING/){ # line with scattering angle
+	    @ang_str = split(' ',$textline);
+	}
+    }
+    $energy = $e_str[3];  # indexes were determined experimentally
+    $e_prime = $e_str[6];
+    $theta_e = $ang_str[3];
+    
+    printf "Electron Energy is %s MeV \n", $energy;
+    printf "Scaterred Electron Energy is %s MeV \n",$e_prime;
+    printf " Theta_e is %s deg \n", $theta_e;
+# this is a kludge to get the kin variables to be interpreted as
+# integers so that I can use them in file name formation
+    my $energy_int = ($energy * 1000.0)/ 1000.0;
+    my $e_prime_int = ($e_prime * 1000.0)/1000.0;
+    my $theta_e_int = ($theta_e * 100.0)/10.0;
+    $kin_str = join"_",$energy_int,$e_prime_int;
+    $kin_str = join"_",$kin_str,$theta_e_int;
+    foreach my $calc (@calcnames){
+	$outfiles{$calc} = join"_",$calc,$kin_str;
+	$outfiles{$calc} = join".",$outfiles{$calc},"dat";
+    }
+    return;
+}
+

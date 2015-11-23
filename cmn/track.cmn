@@ -1,0 +1,31 @@
+C TRACK.CMN
+C Common block with track variables.
+C flag for forward MEs telling if a transformation is drift-only, and giving
+C the extracted drift length.
+
+	integer*4       max_class               !maximum number of classes.
+	parameter       (max_class = 18)        !must also change in transp.f
+	integer*4       nspectr
+	parameter       (nspectr=2)
+
+	DOUBLE PRECISION driftdist(nspectr,max_class)
+	logical adrift(nspectr,max_class)
+
+	common /driftdistances/ driftdist,adrift
+
+
+
+      
+        DOUBLE PRECISION  xs,ys,zs			!track x,y,z positions (cm)
+	DOUBLE PRECISION dxdzs,dydzs		        !track slop (dx/dz, dy/dz)
+	DOUBLE PRECISION dpps			        !delta dp/p (%).
+        common  /track1/ xs,ys,zs,dxdzs,dydzs,dpps
+
+	DOUBLE PRECISION xs_fp,ys_fp		         !track x,y at the focal plane
+	common /track2/ xs_fp,ys_fp
+
+
+
+
+
+

@@ -1,0 +1,8 @@
+c rada.cmn
+c
+      integer countall,countbad
+c
+      double precision winkel1,winkel2,winkel3,winkel4,winkel5,winkel6
+c
+      common /radacom_d/winkel1,winkel2,winkel3,winkel4,winkel5,winkel6
+      common /radacom_i/countall,countbad

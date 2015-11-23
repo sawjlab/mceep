@@ -1,0 +1,6 @@
+trvec
+1                                          ntuple ID
+1000000                                    max events to process
+1653.,0.,0.,1218.,37.0,0.,1000.,-47.1,0.   kinematics
+2.,1.,938.2796                             a,z,m_eject
+T,F,100,10                                 bound,elastic,iphys,ispect

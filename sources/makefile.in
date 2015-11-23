@@ -1,0 +1,147 @@
+OPSYS = g77
+PROGRAM = mceep
+DIR_PREFIX = /home/saw/MCEEP/JJ/mceep
+apertures.cmn
+aren_ranges.cmn
+aren_respon.cmn
+eloss.cmn
+hrs.cmn
+input.cmn
+labcoord.cmn
+lifetimes.cmn
+lifetimes_dat.cmn
+mad.cmn
+masses.cmn
+masses_dat.cmn
+ntu.cmn
+ntu_sav.cmn
+ntu_user.cmn
+ntu_user_sav.cmn
+rada.cmn
+ran.cmn
+sep.cmn
+spectrometer.cmn
+spectrometer_dat.cmn
+spin.cmn
+struct_hrs.cmn
+summary.cmn
+track.cmn
+var.cmn
+var_dat.cmn
+wc.cmn
+1 arenhoevel.f aren_respon.cmn aren_ranges.cmn var.cmn
+1 borie_drechsel.f
+1 bremsgen.f rada.cmn
+1 c12_elastic.f
+1 calc_b.f eloss.cmn
+1 compute_cosy_spin.f spin.cmn
+1 compute_transp_to_cosy.f masses.cmn
+1 decay.f masses.cmn var.cmn
+1 denscorr.f eloss.cmn
+1 deut_elastic.f
+1 deut_sabjes.f
+1 electro_prod.f var.cmn masses.cmn
+1 eloss_e.f eloss.cmn
+1 eloss_proton.f masses.cmn eloss.cmn
+1 elossw.f eloss.cmn
+1 epc.f
+1 ext_bremss.f eloss.cmn
+1 fint.f
+1 formfact.f
+1 get_vect.f wc.cmn
+1 glande.f
+1 glandg.f
+1 glands.f
+1 gvaviv.f
+1 he3_elastic.f
+1 he4_elastic.f
+1 hrs.f spectrometer.cmn hrs.cmn
+1 hrs_inv.f
+1 hyd_elastic.f
+1 in_aperture.f
+1 index_accept_fcn.f
+1 input.f input.cmn masses.cmn spectrometer.cmn wc.cmn
+1 interp.f summary.cmn
+1 kinem_elas_ef.f masses.cmn
+1 kinem_elas_pf.f
+1 kinem.f var.cmn masses.cmn lifetimes.cmn lifetimes_dat.cmn
+1 kinfac_2hgross.f
+1 kinfac_pwvo.f
+1 Laget_Xsec.f
+1 lomon_ff.f
+1 mad12dfwd_rev.f
+1 mad12.f spectrometer.cmn mad.cmn
+1 mad12_inv.f
+1 mad12nq.f spectrometer.cmn mad.cmn
+1 mad12nq_inv.f
+1 mad35.f spectrometer.cmn mad.cmn
+1 mad35_funcs.f
+1 mad.f
+1 mad_inv.f
+1 mad_nq12_f.f
+1 matrix.f
+1 mceep.f input.cmn var.cmn spectrometer.cmn summary.cmn labcoord.cmn masses.cmn wc.cmn eloss.cmn hrs.cmn sep.cmn mad.cmn rada.cmn var_dat.cmn spectrometer_dat.cmn masses_dat.cmn
+1 mceep_misc.f
+1 monte_inv.f
+1 monte_trans.f
+1 mo_tsai.f masses.cmn
+1 mscatt.f eloss.cmn
+1 peaking.f
+1 peek.f masses.cmn var.cmn
+1 peepi.f masses.cmn var.cmn
+1 physics.f var.cmn lifetimes.cmn lifetimes_dat.cmn
+1 plot.f
+1 ps_beam.f
+1 pwia_vo.f masses.cmn
+1 qfsv.f
+1 random.f
+1 ranecu.f
+1 ranges.f input.cmn var.cmn
+1 read_cosy_input_file.f spin.cmn
+1 r-function.f
+1 rotate_pol.f
+1 schwinger.f var.cmn
+1 seed_getnsav.f
+1 sep.f spectrometer.cmn hrs.cmn sep.cmn
+1 sep_inv.f
+1 septum_inv.f
+1 septum_trans.f
+1 setup_pion.f
+1 sigmacc1.f masses.cmn
+1 sigmacc2.f masses.cmn
+1 sig_mscat.f masses.cmn
+1 smott.f
+1 spectral.f summary.cmn
+1 spectrometer.f spectrometer.cmn wc.cmn masses.cmn input.cmn struct_hrs.cmn apertures.cmn track.cmn
+1 spin_1st_ord.f input.cmn spectrometer.cmn masses.cmn
+1 spin_dat.f masses.cmn
+1 spin_precess.f
+1 stats.f
+1 summary.f summary.cmn var.cmn input.cmn spectrometer.cmn masses.cmn wc.cmn eloss.cmn
+1 targ_geom.f
+1 targ_setup.f eloss.cmn
+1 tg_path.f eloss.cmn
+1 track.f wc.cmn
+1 tr_drift.f
+1 trit_elastic.f
+1 trptvslab.f
+1 tr_rot.f
+2 angfac.f
+2 boost.f
+2 currnt.f
+2 deep.f var.cmn
+2 forfac.f
+2 gauleg.f
+2 pwia.f
+2 response.f
+2 rotation.f
+2 wave.f
+3 hrs_cosy.f struct_hrs.cmn apertures.cmn track.cmn
+3 hrs_hut.f struct_hrs.cmn track.cmn
+3 hrs_recon.f track.cmn
+3 locforunt.f
+3 musc_ext.f
+3 musc.f ran.cmn
+3 project.f track.cmn
+3 rotate_haxis.f track.cmn
+3 transp.f track.cmn

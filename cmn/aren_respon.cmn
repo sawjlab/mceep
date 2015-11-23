@@ -1,0 +1,12 @@
+C
+C --------------------------------------------------------------------
+C     aren_respon.cmn
+C
+C         Arenhovel response functions
+C --------------------------------------------------------------------
+C
+      COMMON /ARENRESP/ rl,rt,rlt,rtt
+      DOUBLE PRECISION  rl(7,11,7,49,7)
+      DOUBLE PRECISION  rt(7,11,7,49,7)
+      DOUBLE PRECISION rlt(7,11,7,49,7)
+      DOUBLE PRECISION rtt(7,11,7,49,7)

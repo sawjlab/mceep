@@ -1,0 +1,10 @@
+*
+*    commons for COSY spin matrix
+*
+      COMMON /SPIN_I/ iligne_spi,ip_spi
+      COMMON /SPIN_D/ sp_ten
+c
+	double precision sp_ten(500,3,3)
+c
+	integer iligne_spi(3),ip_spi(500,5,3)
+c

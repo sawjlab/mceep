@@ -1,0 +1,16 @@
+C APERTURES.CMN
+C
+C Aperture Limits:
+
+	DOUBLE PRECISION r_Q1,r_Q2,r_Q3
+	DOUBLE PRECISION dip1,dip2,dip3,dip4
+
+	parameter	(r_Q1	= 14.92)	!15.0 cm radius was 14.92
+	parameter	(r_Q2	= 30.22)	!30.22 cm radius
+	parameter	(r_Q3	= 30.22)	!30.22 cm radius
+!	parameter	(dip1	= 40.00)	!D1 vert. 1/2 gap in cm
+!	parameter	(dip2	= 125.0)	
+!	parameter	(dip3	= 125.0)
+!	parameter	(dip4 	= 840.0)
+
+

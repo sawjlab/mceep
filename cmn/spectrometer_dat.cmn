@@ -1,0 +1,9 @@
+C
+C ---------------------------------------------------------------------
+C       Spectrometer analysis:  labels.
+C ---------------------------------------------------------------------
+C
+      DATA TR_AXIS  /'  X (cm)  ','Theta (mr)','  Y (cm)  ',
+     #               ' Phi (mr) ','  L (cm)  ','Delta (%) '/
+      DATA TR_LABEL /'  X  ','Theta','  Y  ',
+     #               ' Phi ','  L  ','Delta'/

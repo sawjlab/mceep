@@ -1,0 +1,31 @@
+1000000                                    # tries
+4,4,4,4,4,4                                for default ranges
+938.2796,1,0.0                             m_eject,z_eject,em_bound
+3245.,0.,0.,2819.,17.00,0.,990.,-56.33,0.  kinematics
+15.,-15.,4.5,-4.5                          momentum acceptances
+'E','R',76.,414.,60.,130.                  nominal solid angles
+10.686,1.,1.                               luminosity,time,spec_fac
+45.,2.2,2.2                                for singles only
+1.,1.,0.07124,2,1                          targ: a,z,dens,targ_mod,eloss_mod
+-0.075,0.075                               targ: cell start/end
+1.35,1.100                                 drift to aperture - nom. sld. ang.
+0.,0.,0.,0.,0.                            beam: pol, vert, disp, df, tof_win
+0.,0.,0.,0.,0.                             beam: FWHM   in cm,cm,mr,mr,%
+0.,0.,0.,0.,0.                             beam: offset in cm,cm,mr,mr,%
+'R',0.0034,0.0028                          beam: raster shape, X size, Y size
+'E',F,3,-90.,0.,0.,0.                     ELECTRON ARM
+'NTU',0,0,'mad_beforemag1.ntu'             at the target
+'MAD',1,T,T,T,T                            aperture tests and tgt-->fp
+'NTU',0,20,'mad_efp.ntu'                   at the focal plane
+'P',T,0,-90.,0.,0.,0.                     HADRON ARM
+0                                          # global cuts
+0                                          # specific cuts
+3                                          # plots
+'NTU',0,4,81,82,83,84,'mad.ntu'
+'P1D',0,-100,100,50,1.,0.,0,152,'mad_mag1x.top'
+'P2D',0,-100,100,-100,100,50,50,1.,1.,0.,0.,0,152,153,'mad_mag1x_mag1y.top'
+Comments:  H(e,e'p) with JLAB Hall A MAD + HRSH
+           10 uA on 15 cm LH2
+           External radiation included
+
+

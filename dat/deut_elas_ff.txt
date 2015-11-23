@@ -1,0 +1,37 @@
+
+           EXPLANATION OF DEUTERON ELASTIC FORM FACTOR FILES
+           -------------------------------------------------
+
+This letter from John Tjon to Robert Lourie very briefly explains
+the deuteron elastic form factors contained in the 12 files from Tjon.
+
+------------------------------------------------------------------------------
+------------------------------------------------------------------------------
+             The files (located in DAT$D) are:
+
+  ia.fc,     ia.fq,     ia.fm       (relativistic IA)
+  iamec.fc,  iamec.fq,  iamec.fm    (relativistic IA + MEC)
+  rsc.fc,    rsc.fq,    rsc.fm      (relativistic IA       w/ Reid Soft Core)
+  rscmec.fc, rscmec.fq, rscmec.fm   (relativistic IA + MEC w/ Reid Soft Core)
+
+  Here, the file extensions fc, fq and fm refer respectively to the charge,
+  quadrupole and magnetic form factors.
+------------------------------------------------------------------------------
+------------------------------------------------------------------------------
+
+        I am enclosing some of our recent results on the
+e.m. f.f. which has been done with my student Hummel and
+which we hope to publish soon. The q**2 is in fm-2.
+I hope the tables are clear enough. If not, let me know.
+ 
+Best regards,   John Tjon
+ 
+IA : Hohler form factors
+MEC: (pi-rho-gamma plus omega-sigma-gamma contribution)
+No Lorentz boosts and negative spinor states.
+ 
+--------------------------
+Blankenbecler- Sugar Equations
+---------------------------
+See Zuilhof and Tjon, Phys Rev C22, 2369 (1980) and Phys.Lett
+84B, 31 (1979).

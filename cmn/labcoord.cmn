@@ -1,0 +1,21 @@
+C
+C ---------------------------------------------------------------------
+C       LABCOORD.CMN
+C           Laboratory variable equivalences.
+C ---------------------------------------------------------------------
+C
+      DOUBLE PRECISION QI_E(6),QI_P(6)
+C
+      EQUIVALENCE (QI_E(1),BEAM_E1)
+      EQUIVALENCE (QI_E(2),TH_E_I)
+      EQUIVALENCE (QI_E(3),BEAM_E2)
+      EQUIVALENCE (QI_E(4),PH_E_I)
+      EQUIVALENCE (QI_E(5),BEAM_E3)
+      EQUIVALENCE (QI_E(6),PF_E_I)
+C
+      EQUIVALENCE (QI_P(1),BEAM_P1)
+      EQUIVALENCE (QI_P(2),TH_P_I)
+      EQUIVALENCE (QI_P(3),BEAM_P2)
+      EQUIVALENCE (QI_P(4),PH_P_I)
+      EQUIVALENCE (QI_P(5),BEAM_P3)
+      EQUIVALENCE (QI_P(6),PF_P_I)

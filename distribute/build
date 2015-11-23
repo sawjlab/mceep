@@ -1,0 +1,85 @@
+#!/bin/sh
+#
+# Set environment variables
+#
+echo "New environment variables (put these in your login file):"
+echo " "
+cd ../..
+mceep_home=`pwd`
+cd mceep/distribute
+mceep_cmn=$mceep_home/mceep/cmn; export mceep_cmn
+mceep_dat=$mceep_home/mceep/dat; export mceep_dat
+mceep_util=$mceep_home/mceep/utilities; export mceep_util
+#
+echo "  mceep_cmn="`printenv mceep_cmn`
+echo "  mceep_dat="`printenv mceep_dat`
+echo "  mceep_util="`printenv mceep_util`
+#
+echo " "
+echo "Enter Operating System (hp,ultrix,osf1,sun,absoft,g77,sgi):"
+read opsys
+case $opsys in
+  hp)
+      gmake=/usr/local/bin/gmake
+      ;;
+  ultrix)
+      gmake=/usr/local/bin/gmake
+      ;;
+  osf1)
+      gmake=/usr/local/bin/make
+      ;;
+  sun)
+      gmake=make
+      ;;
+  absoft)
+      gmake=/usr/bin/make
+      ;;
+  g77)
+      gmake=/usr/bin/make
+      ;;
+  sgi)
+      gmake=/usr/local/bin/make
+      ;;
+esac
+#
+# Produce mceep makefile and then mceep executable
+#
+echo Producing mceep makefile
+cd ../sources
+../distribute/makemf $opsys mceep
+echo Making Executable: mceep/sources/mceep
+$gmake
+#
+# Produce mceep_util makefile and then mceep_util executable
+#
+echo Producing mceep_util makefile
+cd ../utilities
+../distribute/makemf $opsys mceep_util
+echo Making Executable: mceep/utilities/mceep_util
+$gmake
+#
+# Produce systerr makefile and then systerr executable
+#
+echo Producing systerr makefile
+cd ..
+echo 'DIR_PREFIX = '`pwd` > .temp1
+cd systerr
+mv ../.temp1 ./
+echo 'OPSYS = '$opsys >> .temp1
+sed 's/OPSYS =/#OPSYS =/g' makefile > .temp2
+sed 's/DIR_PREFIX =/#DIR_PREFIX =/g' .temp2 > .temp3
+cat .temp1 .temp3 > .temp4
+rm .temp1
+rm .temp2
+rm .temp3
+mv .temp4 makefile
+echo Making Executable: mceep/systerr/systerr
+$gmake
+echo "*************************************************************"
+echo "    Verify your port of mceep by                             "
+echo "       1) changing directory to:    mceep/utilities          "
+echo "       2) executing the script:     compare_vn_m             "
+echo "          where n_m is the current version number            "
+echo "    Then:  remember to set your environment variables        "
+echo "*************************************************************"
+

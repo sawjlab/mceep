@@ -1,0 +1,12 @@
+
+                   May 1, 2002
+
+The files here are the new LeRose ones, which he calls
+New-Left and New-Right.  I have renamed the directories
+so that I don't have to change the Fortran code which
+directly references these directory names.  The old files
+have been put into old.tar.  According to LeRose, the
+function files (i.e. Fortran) have not changed so that only
+the data files contained here were extracted from his new
+distribution:  http://www.jlab.org/~lerose/r-function.html
+ 

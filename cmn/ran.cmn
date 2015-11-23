@@ -1,0 +1,7 @@
+*Ran.cmn
+*command block for the random numbers
+
+	integer*4 iran
+	DOUBLE PRECISION ran,secnds
+	common /ranblk/ iran
+

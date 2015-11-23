@@ -1,0 +1,13 @@
+C
+C --------------------------------------------------------------------
+C     aren_ranges.cmn
+C
+C         Arenhovel grid ranges, # steps, etc.
+C --------------------------------------------------------------------
+C
+      COMMON /ARENRANG/ lo,hi,del,npts
+      COMMON /ARENTHCM/ cm_1,cm_2,cm_3,cm_4,cm_d1,cm_d2,cm_d3,
+     #                  cm_npts
+      DOUBLE PRECISION lo(4),hi(4),del(4)
+      DOUBLE PRECISION cm_1,cm_2,cm_3,cm_4,cm_d1,cm_d2,cm_d3
+      INTEGER          npts(4),cm_npts

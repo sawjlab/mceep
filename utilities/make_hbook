@@ -1,0 +1,53 @@
+#!/bin/sh
+#
+# Script to use mceep utility program to scan mceep input file
+# for generated plots and convert series of 1D and 2D plots
+# and MCEEP Ntuples to an hbook file.
+#
+# Command syntax:  "make_hbook mceep_input_file_prefix"
+#
+# A file with ".hbook" appended to the mceep input
+# file prefix will be created.
+#
+# Modified to use unique temporary filenames.
+# Hassan Ibrahim, December 8, 2004
+
+# The following line is important in case of Abort.
+rm -f $1.temp 
+
+infile=$1.inp
+outfile=$1.hbook
+tmpfile=$1.tmp
+cp $infile $tmpfile
+
+awk -F, 'BEGIN {print "1\n'$1'.temp.hbook"}
+  $1~/P1D|p1d|H1D|h1d/ {
+  print "1"
+  print $NF
+}' $tmpfile >> $1.temp
+awk -F, '$1~/P2D|p2d|H2D|h2d/ {
+  print "2"
+  print $NF
+}' $tmpfile >> $1.temp
+awk -F, '$1~/NTU|ntu/ {
+  print "N"
+  print $NF
+}' $tmpfile >> $1.temp
+awk -F, '$1~/NTM|ntm/ {
+  print "M"
+  print $NF
+} END {print "\n\n"}' $tmpfile >> $1.temp
+sed 's/'\''//g' $1.temp > $1.temp1
+#
+#Add this line to get rid of the indentation in $1.temp1
+awk '{print $1}' $1.temp1 > $1.temp2
+#
+$mceep_util/mceep_util < $1.temp2 > $1.temp3
+rm $1.temp
+rm $1.temp1
+rm $1.temp2
+rm $1.temp3
+rm $tmpfile
+mv $1.temp.hbook $outfile
+#
+echo $outfile "created"

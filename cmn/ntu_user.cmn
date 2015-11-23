@@ -1,0 +1,38 @@
+C
+C ---------------------------------------------------------------------
+C       ntu_user.cmn
+C
+C       Include file for HBOOK column-wise Ntuple read program
+C       (needed by ~/mceep/utilities/make_new_cwn.f)
+C
+C       For a saved version (as this include file must be tailored
+C       for a given Ntuple structure) see:
+C          ~/mceep/cmm/ntu_user_sav.cmn
+C
+C       The variables on the left of the "=" sign below must NOT
+C       be changed.  The variables on the right should be changed
+C       to match those in the actual Ntuple.  If there is only
+C       single arm data, then the four lines corresponding to the
+C       other arm MUST be commented out!
+C ---------------------------------------------------------------------
+C
+c      y_l  = spec_e_y_tg
+c      th_l = spec_e_th_tg
+c      ph_l = spec_e_ph_tg
+c      dp_l = spec_e_dp
+c
+c      y_r  = spec_h_y_tg
+c      th_r = spec_h_th_tg
+c      ph_r = spec_h_ph_tg
+c      dp_r = spec_h_dp
+c
+      y_l  = spec_l_y_tg
+      th_l = spec_l_th_tg
+      ph_l = spec_l_ph_tg
+      dp_l = spec_l_dp
+c
+      y_r  = spec_r_y_tg
+      th_r = spec_r_th_tg
+      ph_r = spec_r_ph_tg
+      dp_r = spec_r_dp
+c

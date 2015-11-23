@@ -1,0 +1,10 @@
+C
+C --------------------------------------------------------------------
+C     MASSES.CMN
+C         Variable declarations and common area for masses/charges.
+C --------------------------------------------------------------------
+C
+      COMMON /MASSES_D/ MNUC,EJECT_MASS,EM_BOUND,M_ELEC
+      COMMON /MASSES_I/ EJECT_CHG
+      DOUBLE PRECISION MNUC,EJECT_MASS,EM_BOUND,M_ELEC
+      INTEGER          EJECT_CHG

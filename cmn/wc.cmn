@@ -1,0 +1,24 @@
+C
+C --------------------------------------------------------------------
+C     WC.CMN
+C       Parameters for Wire Chamber track reconstruction.
+C --------------------------------------------------------------------
+C
+      COMMON /GEOM_CH/  WC_FIL
+      COMMON /GEOM_DP/  X_DELTA,WC_OFF,WC_RES,WC_RAD,WC_MSCT,WC_LOC,
+     #                  WC_C_CANGLE,WC_C_SANGLE,WC_W_CANGLE,WC_W_SANGLE,
+     #                  WC_C_ANGLE,WC_W_ANGLE 
+      COMMON /GEOM_IN/  WC_OFF_COORD,WC_OFF_CHMB,N_WC
+      COMMON /WC_VECT/  TVEC_CHMBR
+C
+      CHARACTER*300     WC_FIL(2)
+C
+      DOUBLE PRECISION  X_DELTA(2),WC_OFF(2),WC_RES(2)
+      DOUBLE PRECISION  WC_RAD(2,5),WC_MSCT(2,5)
+      DOUBLE PRECISION  WC_C_ANGLE(2,5),WC_W_ANGLE(2,5)
+      DOUBLE PRECISION  WC_C_CANGLE(2,5),WC_C_SANGLE(2,5)
+      DOUBLE PRECISION  WC_W_CANGLE(2,5),WC_W_SANGLE(2,5)
+      DOUBLE PRECISION  WC_LOC(2,5),TVEC_CHMBR(5,6)
+
+C
+      INTEGER           N_WC(2),WC_OFF_COORD(2),WC_OFF_CHMB(2)

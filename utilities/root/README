@@ -1,0 +1,25 @@
+There are 2 versions of m2root. Both use the standard MCEEP ntuple
+e.g. mceep.ntu and convert it to a root ntuple (be carful a root
+ntuple can only have about t 14 entries.
+
+m2root: assumes mceep.ntu as name for the mceep ntuple Make a
+symbolic link to the real ntuple you wand to convert. The result of
+m2root is then a file called mceep.root.
+
+m2root_stdin: reads the mceep ntuple from stdin and creates then the
+mceep.root file.
+
+Both programs need the file m2root.h which contains the connection
+between the variable numbers and the variable names. This file is
+created from the common file var_dat.cmn in the mceep distribution. To
+create m2root.h make a symbolic link named var_dat.cmn that points to
+the real file var_dat.cmn which usually is located in the cmn
+directory. Then run the python script 
+
+prep_m2root.py 
+
+This reads var_dat.cmn and writes m2root.h. After this you can compile
+and link m2root with the command:
+make -f m2root.mak
+
+

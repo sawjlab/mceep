@@ -1,0 +1,7 @@
+C
+C --------------------------------------------------------------------
+C     LIFETIMES.CMN
+C         Variable declarations for particle lifetimes.
+C --------------------------------------------------------------------
+C
+      DOUBLE PRECISION LIFE_PION,LIFE_KAON

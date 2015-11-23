@@ -1,0 +1,47 @@
+  1   12    2       0      1     0    0
+ipwba iff iwfmod inonrel iexfac inos inod
+-----------------------------------------------------------------
+Format of above input:  ipwba,iff,iwfmod,inonrel,iexrel,iexfac,inos,inod
+ where:
+
+ ipwba=0 ....... PWIA calculation
+      =1 ....... PWBA calculation
+
+ iff=1 ..........Hohler 8.2 param. with renormalization according to Friar
+    =2 ..........Gari and Krumpelmann
+    =3 ..........Iachello, Jackson and Lande
+    =4 ..........dipole parameterization, Galster
+    =5 ..........dipole parameterization, F_1 neutron=0
+    =6 ..........dipole parameteriztion by Cioffi degli Atti
+    =7 ..........dipole G_E neutron=0.0
+    =8 ..........Gari and Krumpelmann, model 1
+    =9 ..........Gari and Krumpelmann, model 2
+    =10 .........Gari and Krumpelmann, model 3
+    =11 .........Mergell, Meissner and Drechsel
+    =12 .........MMDA Alternate three-pole parameterization
+    =13 .........Ulf-G Meissner, V. Mull, J. Speth and J. W. Van Orden,
+                 Phys. Lett. B 408, 381 (1997).
+    =14 .........VO, Five pole parameterization with all
+                 parameters floating, best fit to old data
+    =15 .........Five pole parameterization that fits new
+                 preliminary CEBAF G_E^p data 
+
+ iwfmod=0 .......Paris wavefunction
+       =1 .......Bonn wavefunction
+       =2 .......CDBonn wavefunction
+       =3 .......Argonne V18 wavefunction
+       =4 .......Van Orden wavefunction
+
+ inonrel=0 ......Relativistic calculation
+        =1 ......Nonrelativistic calculation
+
+ iexfac=0 .......Don't use exact relativistic factors (forced if inonrel=1)
+       =1 .......Use exact relativistic factors 
+
+ inos=0 .........Turn on  s-wave
+     =1 .........Turn off s-wave
+
+ inod=0 .........Turn on  d-wave
+     =1 .........Turn off d-wave
+
+

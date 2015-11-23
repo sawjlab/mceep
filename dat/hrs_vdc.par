@@ -1,0 +1,6 @@
+12.38404                <x|delta>
+0.,1,1                  offset,coord,chmbr
+0.02                    position resolution (cm)
+2                       # chambers
+-45.,45.,0.,1.2D-3      chmbr angle,wire angle,location,x/x_0 (incl. air)
+-45.,45.,50.,7.3D-4     chmbr angle,wire angle,location,x/x_0

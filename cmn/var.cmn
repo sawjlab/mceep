@@ -1,0 +1,138 @@
+C
+C --------------------------------------------------------------------
+C     VAR.CMN
+C       Arrays for histograms.
+C --------------------------------------------------------------------
+C
+      COMMON /VARRAY_D/ VAR
+      COMMON /VARNAM_C/ VAR_NAME,REACT_NAME
+      COMMON /VARNUM_I/ NUM_VAR
+C
+      CHARACTER*8  REACT_NAME(-200:200)
+      CHARACTER*8  VAR_NAME(200)
+C
+      DOUBLE PRECISION VAR(200)
+C
+      DOUBLE PRECISION BEAM_E1,TH_E_I,BEAM_E2,PH_E_I,BEAM_E3,PF_E_I
+      DOUBLE PRECISION BEAM_P1,TH_P_I,BEAM_P2,PH_P_I,BEAM_P3,PF_P_I
+      DOUBLE PRECISION E0_I,TSCAT,OMEGA,QMAG,THEQ,PHIQ,QMU2_G,X,EPSILON
+      DOUBLE PRECISION THETA_PQ,PHI_X,MISS_M,PREC,PRMAG,RECFAC
+      DOUBLE PRECISION W,THETA_CM,TOF_REL,THETA_PRQ,SURVIVAL_PROB
+      DOUBLE PRECISION BETA_H,EMISS,MMSQ,PREC_X,PREC_Y,PREC_Z
+      DOUBLE PRECISION ELOSS_B_I,ELOSS_E_I,ELOSS_P_I
+      DOUBLE PRECISION DE_DX_CORR_B,DE_DX_CORR_E,DE_DX_CORR_P
+      DOUBLE PRECISION VERTEX_X,VERTEX_Y,VERTEX_Z
+      DOUBLE PRECISION E0_V,EF_V,OMEGA_V,QMAG_V,QMU2_V,PHIX_V
+      DOUBLE PRECISION EMISS_V,MISSM_V,PRMAG_V,W_V,THCM_V
+      DOUBLE PRECISION THPQ_V,TSCAT_V,PREC_TH,PREC_PH,T_GEV2
+      DOUBLE PRECISION JACOB_SA_E,JACOB_SA_P
+C
+      INTEGER NUM_VAR
+C
+      EQUIVALENCE (VAR(1),BEAM_E1)
+      EQUIVALENCE (VAR(2),TH_E_I)
+      EQUIVALENCE (VAR(3),BEAM_E2)
+      EQUIVALENCE (VAR(4),PH_E_I)
+      EQUIVALENCE (VAR(5),BEAM_E3)
+      EQUIVALENCE (VAR(6),PF_E_I)
+      EQUIVALENCE (VAR(7),BEAM_P1)
+      EQUIVALENCE (VAR(8),TH_P_I)
+      EQUIVALENCE (VAR(9),BEAM_P2)
+      EQUIVALENCE (VAR(10),PH_P_I)
+      EQUIVALENCE (VAR(11),BEAM_P3)
+      EQUIVALENCE (VAR(12),PF_P_I)
+      EQUIVALENCE (VAR(13),E0_I)
+      EQUIVALENCE (VAR(14),TSCAT)
+      EQUIVALENCE (VAR(15),OMEGA)
+      EQUIVALENCE (VAR(16),QMAG)
+      EQUIVALENCE (VAR(17),THEQ)
+      EQUIVALENCE (VAR(18),PHIQ)
+      EQUIVALENCE (VAR(19),QMU2_G)
+      EQUIVALENCE (VAR(20),X)
+      EQUIVALENCE (VAR(21),EPSILON)
+      EQUIVALENCE (VAR(22),THETA_PQ)
+      EQUIVALENCE (VAR(23),PHI_X)
+      EQUIVALENCE (VAR(24),MISS_M)
+      EQUIVALENCE (VAR(25),PREC)
+      EQUIVALENCE (VAR(26),PRMAG)
+      EQUIVALENCE (VAR(27),RECFAC)
+      EQUIVALENCE (VAR(28),W)
+      EQUIVALENCE (VAR(29),THETA_CM)
+      EQUIVALENCE (VAR(30),TOF_REL)
+      EQUIVALENCE (VAR(31),THETA_PRQ)
+      EQUIVALENCE (VAR(32),SURVIVAL_PROB)
+      EQUIVALENCE (VAR(33),BETA_H)
+      EQUIVALENCE (VAR(34),EMISS)
+      EQUIVALENCE (VAR(35),MMSQ)
+      EQUIVALENCE (VAR(36),PREC_X)
+      EQUIVALENCE (VAR(37),PREC_Y)
+      EQUIVALENCE (VAR(38),PREC_Z)
+      EQUIVALENCE (VAR(39),ELOSS_B_I)
+      EQUIVALENCE (VAR(40),ELOSS_E_I)
+      EQUIVALENCE (VAR(41),ELOSS_P_I)
+      EQUIVALENCE (VAR(42),DE_DX_CORR_B)
+      EQUIVALENCE (VAR(43),DE_DX_CORR_E)
+      EQUIVALENCE (VAR(44),DE_DX_CORR_P)
+      EQUIVALENCE (VAR(45),VERTEX_X)
+      EQUIVALENCE (VAR(46),VERTEX_Y)
+      EQUIVALENCE (VAR(47),VERTEX_Z)
+      EQUIVALENCE (VAR(48),PREC_TH)
+      EQUIVALENCE (VAR(49),PREC_PH)
+      EQUIVALENCE (VAR(50),T_GEV2)
+C
+C     Variables 51-59 are reserved for the spin precession matrix.
+C     Do not use these numbers!!
+C
+C     Variables 61-66 and 71-76 are reserved for Transport
+C     coordinates for electron and hadron, before SPECTROMETER call
+C     (i.e. at target).
+C
+C     Variables 81-86 and 91-96 are reserved for Transport
+C     coordinates for electron and hadron at the focal plane (i.e.
+C     after the 'HRS' element.
+C
+C     Variables 101-106 and 111-116 are reserved for Transport
+C     coordinates for electron and hadron, after SPECTROMETER call
+C     (i.e. usually the traced-back target coordinates).
+C
+C     Do not use these numbers!!
+C
+      EQUIVALENCE (VAR(117),E0_V)
+      EQUIVALENCE (VAR(118),EF_V)
+      EQUIVALENCE (VAR(119),OMEGA_V)
+      EQUIVALENCE (VAR(120),QMAG_V)
+      EQUIVALENCE (VAR(121),QMU2_V)
+      EQUIVALENCE (VAR(122),PHIX_V)
+      EQUIVALENCE (VAR(123),EMISS_V)
+      EQUIVALENCE (VAR(124),MISSM_V)
+      EQUIVALENCE (VAR(125),PRMAG_V)
+      EQUIVALENCE (VAR(126),W_V)
+      EQUIVALENCE (VAR(127),THCM_V)
+      EQUIVALENCE (VAR(128),THPQ_V)
+      EQUIVALENCE (VAR(129),TSCAT_V)
+C
+C     Variables 130-149 are reserved for Transport X and Y
+C     at intermediate aperture locations within HRS ala J. LeRose.
+C
+C     Do not use these numbers!!
+C
+C     Variables 150-151 are reserved for R-function values for HRSE
+C     and HRSH.
+C
+C     Do not use these numbers!!
+C
+C     Variables 152-163 are reserved for MAD intermediate positions.
+C
+C     Do not use these numbers!!
+C
+      EQUIVALENCE (VAR(164),JACOB_SA_E)
+      EQUIVALENCE (VAR(165),JACOB_SA_P)
+c
+c     Variables 166-185 are reserved for Transport X and Y at
+c     intermediate aperture locations within the septa ala J. LeRose.
+c
+
+
+
+
+

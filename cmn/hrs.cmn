@@ -1,0 +1,16 @@
+C
+C     Variable declarations/commons for X and Y at HRS apertures
+C
+      COMMON /eq1xy/   eq1_ext_x,eq1_ext_y 
+      COMMON /hq1xy/   hq1_ext_x,hq1_ext_y 
+      COMMON /edipxy/  edip_ent_x,edip_ent_y,edip_ext_x,edip_ext_y 
+      COMMON /hdipxy/  hdip_ent_x,hdip_ent_y,hdip_ext_x,hdip_ext_y 
+      COMMON /eq3xy/   eq3_ent_x,eq3_ent_y,eq3_ext_x,eq3_ext_y 
+      COMMON /hq3xy/   hq3_ent_x,hq3_ent_y,hq3_ext_x,hq3_ext_y 
+C
+      DOUBLE PRECISION eq1_ext_x,eq1_ext_y 
+      DOUBLE PRECISION hq1_ext_x,hq1_ext_y
+      DOUBLE PRECISION edip_ent_x,edip_ent_y,edip_ext_x,edip_ext_y
+      DOUBLE PRECISION hdip_ent_x,hdip_ent_y,hdip_ext_x,hdip_ext_y
+      DOUBLE PRECISION eq3_ent_x,eq3_ent_y,eq3_ext_x,eq3_ext_y 
+      DOUBLE PRECISION hq3_ent_x,hq3_ent_y,hq3_ext_x,hq3_ext_y

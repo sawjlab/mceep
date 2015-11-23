@@ -1,0 +1,299 @@
+C
+C --------------------------------------------------------------------
+C     VAR_DAT.CMN
+C       Data statements for histogram labels.
+C --------------------------------------------------------------------
+C
+      DATA NUM_VAR /165/         ! number of histogram variables
+C
+C --------------------------------------------------------------------
+C       Set up the variable names (for formatted outputs).
+C --------------------------------------------------------------------
+C
+      DATA VAR_NAME(1)  /'BEAM_E1 '/
+      DATA VAR_NAME(2)  /'TH_E_I  '/
+      DATA VAR_NAME(3)  /'BEAM_E2 '/
+      DATA VAR_NAME(4)  /'PH_E_I  '/
+      DATA VAR_NAME(5)  /'BEAM_E3 '/
+      DATA VAR_NAME(6)  /'PF_E_I  '/
+C
+      DATA VAR_NAME(7)  /'BEAM_P1 '/
+      DATA VAR_NAME(8)  /'TH_P_I  '/
+      DATA VAR_NAME(9)  /'BEAM_P2 '/
+      DATA VAR_NAME(10) /'PH_P_I  '/
+      DATA VAR_NAME(11) /'BEAM_P3 '/
+      DATA VAR_NAME(12) /'PF_P_I  '/
+C
+      DATA VAR_NAME(13) /'E0_I    '/
+      DATA VAR_NAME(14) /'TSCAT   '/
+      DATA VAR_NAME(15) /'OMEGA   '/
+      DATA VAR_NAME(16) /'QMAG    '/
+      DATA VAR_NAME(17) /'THEQ    '/
+      DATA VAR_NAME(18) /'PHIQ    '/
+      DATA VAR_NAME(19) /'QMU2    '/
+      DATA VAR_NAME(20) /'X       '/
+      DATA VAR_NAME(21) /'EPSILON '/
+      DATA VAR_NAME(22) /'THETA_PQ'/
+      DATA VAR_NAME(23) /'PHI_X   '/
+      DATA VAR_NAME(24) /'MISS_M  '/
+      DATA VAR_NAME(25) /'PREC    '/
+      DATA VAR_NAME(26) /'PRMAG   '/
+      DATA VAR_NAME(27) /'RECFAC  '/
+      DATA VAR_NAME(28) /'W       '/
+      DATA VAR_NAME(29) /'THETA_CM'/
+      DATA VAR_NAME(30) /'TOF_REL '/
+      DATA VAR_NAME(31) /'THET_PRQ'/
+      DATA VAR_NAME(32) /'SURVIVAL'/
+      DATA VAR_NAME(33) /'BETA_H  '/
+      DATA VAR_NAME(34) /'EMISS   '/
+      DATA VAR_NAME(35) /'MMSQ    '/
+C
+      DATA VAR_NAME(36) /'PREC_X  '/
+      DATA VAR_NAME(37) /'PREC_Y  '/
+      DATA VAR_NAME(38) /'PREC_Z  '/
+C
+      DATA VAR_NAME(39) /'ELOSS_B '/
+      DATA VAR_NAME(40) /'ELOSS_E '/
+      DATA VAR_NAME(41) /'ELOSS_P '/
+C
+      DATA VAR_NAME(42) /'DE_DX_B '/
+      DATA VAR_NAME(43) /'DE_DX_E '/
+      DATA VAR_NAME(44) /'DE_DX_P '/
+C
+      DATA VAR_NAME(45) /'VERTEX_X'/
+      DATA VAR_NAME(46) /'VERTEX_Y'/
+      DATA VAR_NAME(47) /'VERTEX_Z'/
+C
+      DATA VAR_NAME(48) /'PREC_TH '/
+      DATA VAR_NAME(49) /'PREC_PH '/
+C
+      DATA VAR_NAME(50) /'t       '/
+C
+      DATA VAR_NAME(51) /'Snn     '/
+      DATA VAR_NAME(52) /'Snt     '/
+      DATA VAR_NAME(53) /'Snl     '/
+      DATA VAR_NAME(54) /'Stn     '/
+      DATA VAR_NAME(55) /'Stt     '/
+      DATA VAR_NAME(56) /'Stl     '/
+      DATA VAR_NAME(57) /'Sln     '/
+      DATA VAR_NAME(58) /'Slt     '/
+      DATA VAR_NAME(59) /'Sll     '/
+C
+      DATA VAR_NAME(61) /'X_E_TG  '/
+      DATA VAR_NAME(62) /'TH_E_TG '/
+      DATA VAR_NAME(63) /'Y_E_TG  '/
+      DATA VAR_NAME(64) /'PH_E_TG '/
+      DATA VAR_NAME(65) /'L_E_TG  '/
+      DATA VAR_NAME(66) /'DP_E_TG '/
+C
+      DATA VAR_NAME(71) /'X_P_TG  '/
+      DATA VAR_NAME(72) /'TH_P_TG '/
+      DATA VAR_NAME(73) /'Y_P_TG  '/
+      DATA VAR_NAME(74) /'PH_P_TG '/
+      DATA VAR_NAME(75) /'L_P_TG  '/
+      DATA VAR_NAME(76) /'DP_P_TG '/
+C
+      DATA VAR_NAME(81) /'X_E_FP  '/
+      DATA VAR_NAME(82) /'TH_E_FP '/
+      DATA VAR_NAME(83) /'Y_E_FP  '/
+      DATA VAR_NAME(84) /'PH_E_FP '/
+      DATA VAR_NAME(85) /'L_E_FP  '/
+      DATA VAR_NAME(86) /'DP_E_FP '/
+C
+      DATA VAR_NAME(91) /'X_P_FP  '/
+      DATA VAR_NAME(92) /'TH_P_FP '/
+      DATA VAR_NAME(93) /'Y_P_FP  '/
+      DATA VAR_NAME(94) /'PH_P_FP '/
+      DATA VAR_NAME(95) /'L_P_FP  '/
+      DATA VAR_NAME(96) /'DP_P_FP '/
+C
+      DATA VAR_NAME(101) /'X_E_FIN '/
+      DATA VAR_NAME(102) /'TH_E_FIN'/
+      DATA VAR_NAME(103) /'Y_E_FIN '/
+      DATA VAR_NAME(104) /'PH_E_FIN'/
+      DATA VAR_NAME(105) /'L_E_FIN '/
+      DATA VAR_NAME(106) /'DP_E_FIN'/
+C
+      DATA VAR_NAME(111) /'X_P_FIN '/
+      DATA VAR_NAME(112) /'TH_P_FIN'/
+      DATA VAR_NAME(113) /'Y_P_FIN '/
+      DATA VAR_NAME(114) /'PH_P_FIN'/
+      DATA VAR_NAME(115) /'L_P_FIN '/
+      DATA VAR_NAME(116) /'DP_P_FIN'/
+C
+      DATA VAR_NAME(117) /'E0_V    '/
+      DATA VAR_NAME(118) /'EF_V    '/
+      DATA VAR_NAME(119) /'OMEGA_V '/
+      DATA VAR_NAME(120) /'QMAG_V  '/
+      DATA VAR_NAME(121) /'QMU2_V  '/
+      DATA VAR_NAME(122) /'PHIX_V  '/
+      DATA VAR_NAME(123) /'EMISS_V '/
+      DATA VAR_NAME(124) /'MISSM_V '/
+      DATA VAR_NAME(125) /'PRMAG_V '/
+      DATA VAR_NAME(126) /'W_V     '/
+      DATA VAR_NAME(127) /'THCM_V  '/
+      DATA VAR_NAME(128) /'THPQ_V  '/
+      DATA VAR_NAME(129) /'TSCAT_V '/
+C
+      DATA VAR_NAME(130) /'EQ1_2_X'/
+      DATA VAR_NAME(131) /'EQ1_2_Y'/
+      DATA VAR_NAME(132) /'EDIP_1_X'/
+      DATA VAR_NAME(133) /'EDIP_1_Y'/
+      DATA VAR_NAME(134) /'EDIP_2_X'/
+      DATA VAR_NAME(135) /'EDIP_2_Y'/
+      DATA VAR_NAME(136) /'EQ3_1_X '/
+      DATA VAR_NAME(137) /'EQ3_1_Y '/
+      DATA VAR_NAME(138) /'EQ3_2_X '/
+      DATA VAR_NAME(139) /'EQ3_2_Y '/
+C
+      DATA VAR_NAME(140) /'PQ1_2_X'/
+      DATA VAR_NAME(141) /'PQ1_2_Y'/
+      DATA VAR_NAME(142) /'PDIP_1_X'/
+      DATA VAR_NAME(143) /'PDIP_1_Y'/
+      DATA VAR_NAME(144) /'PDIP_2_X'/
+      DATA VAR_NAME(145) /'PDIP_2_Y'/
+      DATA VAR_NAME(146) /'PQ3_1_X '/
+      DATA VAR_NAME(147) /'PQ3_1_Y '/
+      DATA VAR_NAME(148) /'PQ3_2_X '/
+      DATA VAR_NAME(149) /'PQ3_2_Y '/
+C
+      DATA VAR_NAME(150) /'E_RFN   '/
+      DATA VAR_NAME(151) /'P_RFN   '/
+C
+C   Add Variables for MAD intermediate positions
+C
+      DATA VAR_NAME(152) /'MAG1_1_X'/
+      DATA VAR_NAME(153) /'MAG1_1_Y'/
+      DATA VAR_NAME(154) /'MAG1_2_X'/
+      DATA VAR_NAME(155) /'MAG1_2_Y'/
+      DATA VAR_NAME(156) /'MAG1_3_X'/
+      DATA VAR_NAME(157) /'MAG1_3_Y'/
+      DATA VAR_NAME(158) /'MAG2_1_X'/
+      DATA VAR_NAME(159) /'MAG2_1_Y'/
+      DATA VAR_NAME(160) /'MAG2_2_X'/
+      DATA VAR_NAME(161) /'MAG2_2_Y'/
+      DATA VAR_NAME(162) /'MAG2_3_X'/
+      DATA VAR_NAME(163) /'MAG2_3_Y'/
+C
+      DATA VAR_NAME(164) /'JACOB_E '/
+      DATA VAR_NAME(165) /'JACOB_P '/
+C
+      DATA VAR_NAME(166) /'SL_EP3_X'/
+      DATA VAR_NAME(167) /'SL_EP3_Y'/
+      DATA VAR_NAME(168) /'SL_EP4_X'/
+      DATA VAR_NAME(169) /'SL_EP4_Y'/
+      DATA VAR_NAME(170) /'SL_EP5_X'/
+      DATA VAR_NAME(171) /'SL_EP5_Y'/
+      DATA VAR_NAME(172) /'SL_EP6_X'/
+      DATA VAR_NAME(173) /'SL_EP6_Y'/
+      DATA VAR_NAME(174) /'SL_EP7_X'/
+      DATA VAR_NAME(175) /'SL_EP7_Y'/
+C
+      DATA VAR_NAME(176) /'SR_EP3_X'/
+      DATA VAR_NAME(177) /'SR_EP3_Y'/
+      DATA VAR_NAME(178) /'SR_EP4_X'/
+      DATA VAR_NAME(179) /'SR_EP4_Y'/
+      DATA VAR_NAME(180) /'SR_EP5_X'/
+      DATA VAR_NAME(181) /'SR_EP5_Y'/
+      DATA VAR_NAME(182) /'SR_EP6_X'/
+      DATA VAR_NAME(183) /'SR_EP6_Y'/
+      DATA VAR_NAME(184) /'SR_EP7_X'/
+      DATA VAR_NAME(185) /'SR_EP7_Y'/      
+C
+      DATA REACT_NAME(0)     /'Phase_Sp'/
+C
+      DATA REACT_NAME(1)     /'Cts_eeX '/
+      DATA REACT_NAME(2)     /'Cts_N_R '/
+      DATA REACT_NAME(3)     /'Cts_T_R '/
+      DATA REACT_NAME(4)     /'Cts_L_R '/
+      DATA REACT_NAME(5)     /'Cts_N_S '/
+      DATA REACT_NAME(6)     /'Cts_T_S '/
+      DATA REACT_NAME(7)     /'Cts_L_S '/
+      DATA REACT_NAME(8)     /'Cts_X   '/
+      DATA REACT_NAME(9)     /'Cts_Y   '/
+      DATA REACT_NAME(10)    /'Cts_Z   '/
+      DATA REACT_NAME(11)    /'Cts_e_AP'/
+      DATA REACT_NAME(12)    /'Cts_N_RI'/
+      DATA REACT_NAME(13)    /'Cts_T_RI'/
+      DATA REACT_NAME(14)    /'Cts_L_RI'/
+      DATA REACT_NAME(15)    /'Cts_N_SI'/
+      DATA REACT_NAME(16)    /'Cts_T_SI'/
+      DATA REACT_NAME(17)    /'Cts_L_SI'/
+      DATA REACT_NAME(18)    /'Cts_X_I '/
+      DATA REACT_NAME(19)    /'Cts_Y_I '/
+      DATA REACT_NAME(20)    /'Cts_Z_I '/
+      DATA REACT_NAME(22)    /'Cts_N_RD'/
+      DATA REACT_NAME(23)    /'Cts_T_RD'/
+      DATA REACT_NAME(24)    /'Cts_L_RD'/
+      DATA REACT_NAME(25)    /'Cts_N_SD'/
+      DATA REACT_NAME(26)    /'Cts_T_SD'/
+      DATA REACT_NAME(27)    /'Cts_L_SD'/
+      DATA REACT_NAME(28)    /'Cts_X_D '/
+      DATA REACT_NAME(29)    /'Cts_Y_D '/
+      DATA REACT_NAME(30)    /'Cts_Z_D '/
+      DATA REACT_NAME(50)    /'YA_ep   '/
+      DATA REACT_NAME(51)    /'YA_epi+ '/
+      DATA REACT_NAME(52)    /'YA_pi-p '/
+      DATA REACT_NAME(53)    /'YA_pi-+ '/
+      DATA REACT_NAME(100)   /'Cts_ee  '/
+      DATA REACT_NAME(101)   /'Cts_epi-'/
+      DATA REACT_NAME(102)   /'Cts_ep  '/
+      DATA REACT_NAME(103)   /'Cts_epi+'/
+      DATA REACT_NAME(121)   /'Cts_eeX1'/
+      DATA REACT_NAME(122)   /'Cts_eeX2'/
+      DATA REACT_NAME(123)   /'Cts_eeX3'/
+      DATA REACT_NAME(124)   /'Cts_eeX4'/
+      DATA REACT_NAME(125)   /'Cts_eeX5'/
+      DATA REACT_NAME(126)   /'Cts_eeX6'/
+      DATA REACT_NAME(127)   /'Cts_eeX7'/
+      DATA REACT_NAME(128)   /'Cts_eeX8'/
+      DATA REACT_NAME(129)   /'Cts_eeX9'/
+      DATA REACT_NAME(130)   /'Cts_eeX0'/
+C
+      DATA REACT_NAME(-1)    /'Sig_eeX '/
+      DATA REACT_NAME(-2)    /'Pol_N_R '/
+      DATA REACT_NAME(-3)    /'Pol_T_R '/
+      DATA REACT_NAME(-4)    /'Pol_L_R '/
+      DATA REACT_NAME(-5)    /'Pol_N_S '/
+      DATA REACT_NAME(-6)    /'Pol_T_S '/
+      DATA REACT_NAME(-7)    /'Pol_L_S '/
+      DATA REACT_NAME(-8)    /'Avg_e_AP'/
+      DATA REACT_NAME(-9)    /'Pol_X   '/
+      DATA REACT_NAME(-10)   /'Pol_Y   '/
+      DATA REACT_NAME(-11)   /'Pol_Z   '/
+      DATA REACT_NAME(-12)   /'Pol_N_RI'/
+      DATA REACT_NAME(-13)   /'Pol_T_RI'/
+      DATA REACT_NAME(-14)   /'Pol_L_RI'/
+      DATA REACT_NAME(-15)   /'Pol_N_SI'/
+      DATA REACT_NAME(-16)   /'Pol_T_SI'/
+      DATA REACT_NAME(-17)   /'Pol_L_SI'/
+      DATA REACT_NAME(-18)   /'Pol_X_I '/
+      DATA REACT_NAME(-19)   /'Pol_Y_I '/
+      DATA REACT_NAME(-20)   /'Pol_Z_I '/
+      DATA REACT_NAME(-22)   /'Pol_N_RD'/
+      DATA REACT_NAME(-23)   /'Pol_T_RD'/
+      DATA REACT_NAME(-24)   /'Pol_L_RD'/
+      DATA REACT_NAME(-25)   /'Pol_N_SD'/
+      DATA REACT_NAME(-26)   /'Pol_T_SD'/
+      DATA REACT_NAME(-27)   /'Pol_L_SD'/
+      DATA REACT_NAME(-28)   /'Pol_X_D '/
+      DATA REACT_NAME(-29)   /'Pol_Y_D '/
+      DATA REACT_NAME(-30)   /'Pol_Z_D '/
+      DATA REACT_NAME(-50)   /'SA_ep   '/
+      DATA REACT_NAME(-51)   /'SA_epi+ '/
+      DATA REACT_NAME(-52)   /'SA_pi-p '/
+      DATA REACT_NAME(-53)   /'SA_pi-+ '/
+      DATA REACT_NAME(-100)  /'Sig_ee  '/
+      DATA REACT_NAME(-101)  /'Sig_epi-'/
+      DATA REACT_NAME(-102)  /'Sig_ep  '/
+      DATA REACT_NAME(-103)  /'Sig_epi+'/
+      DATA REACT_NAME(-121)  /'Sig_eeX1'/
+      DATA REACT_NAME(-122)  /'Sig_eeX2'/
+      DATA REACT_NAME(-123)  /'Sig_eeX3'/
+      DATA REACT_NAME(-124)  /'Sig_eeX4'/
+      DATA REACT_NAME(-125)  /'Sig_eeX5'/
+      DATA REACT_NAME(-126)  /'Sig_eeX6'/
+      DATA REACT_NAME(-127)  /'Sig_eeX7'/
+      DATA REACT_NAME(-128)  /'Sig_eeX8'/
+      DATA REACT_NAME(-129)  /'Sig_eeX9'/
+      DATA REACT_NAME(-130)  /'Sig_eeX0'/

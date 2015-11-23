@@ -1,0 +1,68 @@
+50000                                      # tries
+4,4,4,4,4,4                                for default ranges
+493.677,1,671.088                          m_eject,z_eject,em_bound
+3651.,0.,0.,1441.4,-6.0,0.,1960.,6.,0.     kinematics, "-" means e=right
+6.0,-6.0,6.0,-6.0                          momentum acceptances
+'E','E',50.,100.,50.,100.                  nominal solid angle w/ 6-msr coll.
+1.00,1.,1                                  luminosity,time,spec_fac
+45.,2.2,2.2                                for singles only
+1.,1.,0.0723,5,1                           targ: a,z,dens,targ_mod,eloss_mod
+-0.001,0.001                               targ: cell start/end
+1.109,1.100                                drift to aperture - nom. sld. ang.
+0.8,0.,0.,0.,0.                            beam: pol, vert, disp, df, tof_win
+0.,0.,0.,0.,0.                             beam: FWHM   in cm,cm,mr,mr,%
+0.,0.,0.,0.,0.                             beam: offset in cm,cm,mr,mr,%
+'R',0.0058,0.0045                          beam: raster shape, X size, Y size
+'E',T,6,-90.,0.,0.,0.                     ELECTRON ARM
+'NTU',1,0.,'sep_etgt.ntu'
+'SEP','H',T,T,T,T,T,T,T,T,T,T             aper_sep tests and tgt-->fp, HRSR
+'NTU',1,45.,'sep_efp.ntu'
+'TOF',25.4                                 ToF marker      
+'SPI','H'                                  septum inverse map: fp->tgt, HRSR
+'NTU',1,0.,'sep_etgti.ntu'
+'K',T,6,-90.,0.,0.,0.                     HADRON ARM -->not e = hadron
+'NTU',1,0.,'sep_htgt.ntu'
+'SEP','E',T,T,T,T,T,T,T,T,T,T             aper_sep tests + tgt-->fp HRSL
+'NTU',1,45.,'sep_hfp.ntu'
+'TOF',25.4                                 ToF marker      
+'SPI','E'                                  septum inverse map: fp-->tgt, HRSL
+'NTU',1,0.,'sep_htgti.ntu'
+3                                          # global cuts
+86,-5.,5.                                cut3: on delta pe fp
+96,-5.,5.                                cut4: on delta pk fp
+24,661.088,711.088                       cut5: -10,+40 MeV em_bound MCEEP
+3                                          # specific cuts
+1,15,2210.,2964.                             cut 1: on variable 15, omega
+2,28,1640.,2180.                             cut 2: on variable 28, W
+3,24,600.,900.                               cut 3: on variable 24, em_bound
+24                                      # plots
+'NTU',1,10,130,131,132,133,134,135,136,137,138,139,'e_xy.ntu'
+'NTU',1,10,140,141,142,143,144,145,146,147,148,149,'h_xy.ntu'
+'NTU',1,10,166,167,168,169,170,171,172,173,174,175,'sl_xy.ntu'
+'NTU',1,10,176,177,178,179,180,181,182,183,184,185,'sr_xy.ntu'
+'P1D',1,-0.5,0.5,100,1.,0.,0,130,'eq1_ext_x.top'
+'P1D',1,-0.5,0.5,100,1.,0.,0,131,'eq1_ext_y.top'
+'P1D',1,-5.2,-4.95,100,1.,0.,0,132,'edip_ent_x.top'
+'P1D',1,-0.5,0.5,100,1.,0.,0,133,'edip_ent_y.top'
+'P1D',1,-0.5,0.5,100,1.,0.,0,134,'edip_ext_x.top'
+'P1D',1,-0.5,0.5,100,1.,0.,0,135,'edip_ext_y.top'
+'P1D',1,-0.5,0.5,100,1.,0.,0,136,'eq3_ent_x.top'
+'P1D',1,-0.5,0.5,100,1.,0.,0,137,'eq3_ent_y.top'
+'P1D',1,-0.5,0.5,100,1.,0.,0,138,'eq3_ext_x.top'
+'P1D',1,-0.5,0.5,100,1.,0.,0,139,'eq3_ext_y.top'
+'P1D',1,-0.5,0.5,100,1.,0.,0,166,'sl_ep3_x.top'
+'P1D',1,-0.5,0.5,100,1.,0.,0,167,'sl_ep3_y.top'
+'P1D',1,-0.5,0.5,100,1.,0.,0,168,'sl_ep4_x.top'
+'P1D',1,-0.5,0.5,100,1.,0.,0,169,'sl_ep4_y.top'
+'P1D',1,-0.5,0.5,100,1.,0.,0,170,'sl_ep5_x.top'
+'P1D',1,-0.5,0.5,100,1.,0.,0,171,'sl_ep5_y.top' 
+'P1D',1,-0.5,0.5,100,1.,0.,0,172,'sl_ep6_x.top'
+'P1D',1,-0.5,0.5,100,1.,0.,0,173,'sl_ep6_y.top'
+'P1D',1,-0.5,0.5,100,1.,0.,0,174,'sl_ep7_x.top'
+'P1D',1,-0.5,0.5,100,1.,0.,0,175,'sl_ep7_y.top'
+
+Comments:  H(e,e'K)L with JLAB Hall A Septum+HRS
+           first try
+	   simplest input file?
+
+

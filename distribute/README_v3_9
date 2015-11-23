@@ -1,0 +1,627 @@
+
+    ---------------------------   MCEEP   ------------------------------
+    ------------------------   VERSION 3.9  ----------------------------
+    
+    ***  PLEASE DO NOT DISTRIBUTE MODIFIED VERSIONS OF THIS PROGRAM  ***
+    ***             WITHOUT PERMISSION OF THE AUTHOR.                ***
+    --------------------------------------------------------------------
+    --------------------------------------------------------------------
+
+
+              AUTHOR:      P.E. Ulmer
+                           Department of Physics
+                           Old Dominion University
+                           Norfolk, VA 23529
+
+                           Phone:   (757) 683-5851
+                           Email:   ulmer@jlab.org
+
+                           DATE:   V1.0    22-NOV-1991
+                                   V1.01   06-DEC-1991
+                                   V1.10   08-AUG-1992
+                                   V1.20   28-OCT-1992
+                                   V2.0    07-OCT-1994
+                                   V2.1    10-SEP-1997
+                                   V2.2    24-APR-1998
+                                   V2.3    23-APR-1999
+                                   V3.0    14-SEP-1999
+                                   V3.1    18-NOV-1999
+                                   V3.2    12-JAN-2000
+                                   V3.3    22-FEB-2000
+                                   V3.4    02-NOV-2000
+                                   V3.5    12-NOV-2000
+                                   V3.6    06-JUL-2001
+                                   V3.7    03-MAY-2002
+                         update of V3.7    27-SEP-2002
+                                   V3.8    24-APR-2003
+                                   V3.9    14-JUN-2006
+
+                               N  O  T  E
+                               ----------
+
+     This program now runs on the following systems:
+       DEC-Ultrix, DEC-Alpha, HP-UX, SunOS, Linux (Absoft, g77 and SGI)
+
+
+                         D I R E C T O R I E S
+                         ---------------------
+
+     Various directories will be created when you build MCEEP.  They are:
+
+
+   Source directories
+   ------------------
+   Unix name:       ~/mceep/sources/
+   Unix name:       ~/mceep/gross/
+   Unix name:       ~/mceep/cosy/
+   Contains:        All Fortran sources.and objects
+                    In addition, ~/mceep/sources contains the executable.
+
+   Input directory
+   ---------------
+   Unix name:       ~/mceep/input/
+   Contains:        The standard input file is located here.  Also, to test
+                    the program, output files for the standard input file
+                    are located here.  You should run the program with
+                    the sample input file and compare these outputs with
+                    the ones you generated.
+
+   Output directory
+   ----------------
+   Unix name:       ~/mceep/output/
+   Contains:        The compare script will place output files for the
+                    standard input file here.   Starting with version 3.0
+                    the output will be located wherever the program is run. 
+
+   Data directory
+   --------------
+   Unix name:       ~/mceep/dat/
+   Contains:        All data files (spectral functions, etc.)
+                    will be located here.  Also the random number seed
+                    files are located here.
+
+   Common directory
+   ----------------
+   Unix name:       ~/mceep/cmn/
+   Contains:        The common block modules which are included
+                    in various Fortran sources will be located here.
+
+   Utilities directory
+   -------------------
+   Unix name:       ~/mceep/utilities/
+   Contains:        The mceep companion program, mceep_util, is located
+                    here.  It is compiled and linked separately.
+                    This program can convert mceep histograms (Topdrawer
+                    format) and Ntuples to HBOOK format.  A separate script
+                    located here (make_hbook) can be used to make
+                    a single .hbook file from all the Topdrawer histos
+                    by scanning the mceep input file for requested plots.
+
+   Systematic errors directory
+   ---------------------------
+   Unix name:       ~/mceep/systerr/
+   Contains:        A set of tools for analyzing kinematics related
+                    systematic uncertainties.  See the README file.
+                    The Fortran code is compiled and linked separately.
+
+   Distribution directory
+   ----------------------
+   Unix name:       ~/mceep/distribute/
+   Contains:        The MCEEP distribution kit.
+
+
+
+   A sample input file called v3_9.inp should be located in the input   
+   directory.  See the file input.f for the format of MCEEP
+   input files. The results obtained by MCEEP using v3_9.inp as input (for
+   the bound state case in (e,e'p) with radiative effects, multi-photon
+   correction, photon cutoff energy of 1 MeV, physics
+   option 200 and spectral function 10) are located in the input
+   directory as well.  These files provide a comparison so that you can
+   verify that the program is working properly.
+
+   To verify the port of mceep, you can execute the script:
+   /mceep/utilities/compare_v3_9.   This script will run mceep with
+   the v3_9.inp input file and compare the output generated with that
+   from your distribution.
+
+   To produce .hbook files (for use with PAW, PAW++), see the description
+   of the utilities directory above.  To make HBOOK files from a set
+   of MCEEP topdrawer files/ntuples requires executing only one command
+   ("~/mceep/utilities/make_hbook mceep_input_file_prefix").  This command
+   should be typed from the directory containing your input and output. 
+
+   NOTE:  The calculations for the single-arm cross sections ((e,e'),
+          (e,p) etc.) which are based on the programs of J.W. Lightbody
+          and J.S. O'Connell (see Computers in Physics, May/June 1988,
+          p. 57) are currently too slow to be practical for a large
+          number of events (especially the (e,p) calculation).
+          I hope to make faster parameterizations of these cross
+          sections available in the future.  For the time being,
+          unless you are specifically interested in examining single-arm
+          yields, it is suggested that the program be run without
+          calculating the single-arm cross sections (just answer "N" to
+          the appropriate question when running the program).
+
+          For (e,e'p), the following singles cross sections are calculated:
+                (e,e'), (e,pi-), (e,p) and (e,pi+)
+          For (e,e'n), the following singles cross sections are calculated:
+                (e,e'), (e,pi-), (e,n) and (e,pi0)
+
+          Finally, physics option 300 for deuterium is explicitly for (e,e'p)
+          whether (e,e'p) or (e,e'n) is specified at runtime.  The
+          formalism on which this option is based (from Dmitrasinovic/Gross)
+          has not been fully tested - so beware!
+
+       November 22, 1991          CHANGES SINCE PRELIMINARY DISTRIBUTION:
+
+       1) MCEEP now has an elastic scattering option.  This can be used,
+          for example, to simulate 1H(e,e'p) elastic scattering.  Although
+          the kinematics are general so that, in principle, one can
+          simulate any elastic A(e,e'A) process, currently the only
+          physics model implemented is for hydrogen.  Both cross sections
+          and polarizations as well as the parity violating asymmetry
+          are calculated.  The parity-violating asymmetry is for
+          the scattering of polarized electrons off protons in a simple
+          model (see the comments in hyd_elastic.for for more
+          details).  The partial yield can be examined by specifying
+          an IPID index of 8.  The index -8 allows the actual asymmetry
+          to be examined (which includes a factor for the polarization
+          of the beam).
+
+       2) Displayed coincidence cross sections are now differential
+          in the hadron momentum, instead of energy (for the continuum
+          case).  The cross sections are differential in momentum
+          since it is the momentum which is randomly sampled.
+
+       3) A minor error was corrected in converting the sampled angles
+          to laboratory angles.  This correction produces a uniform
+          sampling of solid angle as is required.  This will only make
+          a difference for VERY large solid angle acceptances.  For
+          an 8 msr solid angle, for example, the effect is negligible.
+
+       4) Additional harmonic oscillator momentum distributions are now
+          provided.
+
+       5) Several additional options are now provided for describing the
+          spectrometers + detectors.  These are DFT, ROT and POL.
+             DFT:  performs a drift in a field-free region.
+             ROT:  expresses the Transport vector in a rotated coordinate
+                   system.  This only works for field free regions since
+                   the rays are traced to the new coordinate system.
+             POL:  performs first order spin precession through a magnetic
+                   element.  Assumes that the precession angle depends only
+                   on the net bend angle for that element.
+
+       6) For bound state calculations (where the hadron final momentum
+          is calculated from the electron kinematics, the hadron emission
+          angles and the missing mass) there are, in general, two
+          roots for the hadron momentum.  These correspond to emission
+          of the hadron along or against q in the final COM system.
+          Previously, one of the roots was ignored.  This has been
+          fixed, so that now both roots are considered when they are
+          both within the hadron-arm momentum acceptance.
+
+       7) An additional physics model (option 500) has been incorporated.
+          This model calculates pion electroproduction from the proton
+          in p(e,e'p)pi0 and is based on the routines of R. Lourie.
+
+       8) An error in the handling of extended targets (which affected
+          only the spectrometer map) has been corrected.
+          Now the particle trajectory is traced from the interaction
+          point to the standard Transport XY plane whose origin is at
+          the target center.  This is necessary if one wishes to apply
+          a Transport matrix to examine various quantities at the focal
+          plane, for instance.
+
+       9) The random number functions in random.for were previously
+          single precision.  However, they were implicitly assumed to
+          be double precision in the calling routines.  Apparently,
+          this was no problem for VMS but had SERIOUS consequences for
+          the ULTRIX version.  The functions are now double precision.
+
+      10) MCEEP can now handle spectrometers with an arbitrary bend
+          plane orientation.
+
+      11) NOTE:  The input file structure has changed slightly.  For
+          instance, now all masses are entered on one line, including the
+          ejectile mass.  See the file input.for for the exact structure
+          of the input file.
+
+      12) For factorized (e,e'N) the spectral function routines have been
+          cleaned up.  In particular, the momentum distributions are now
+          truncated where their behavior becomes unreasonable.
+          Interpolations on momentum distributions now take the form
+          exp(Ap^2 +Bp + C) instead of Ap^2 + Bp + C.  Finally the
+          spectroscopic factor now applies to all spectral functions
+          as an overall multiplicative factor.  The integrals of the
+          various distributions can be found in the routines contained
+          in spectral.for.  Finally, the topdrawer files deut_mceep.top,
+          he3_mceep.top and he4_mceep.top illustrate most of the
+          momentum distributions used by MCEEP.  These files can be found
+          in ~/mceep/dat/.
+
+
+                        CHANGES SINCE Version 1.0
+                        -------------------------
+
+                   (See Comments in the file mceep.f
+                   for names of added/changed modules)
+
+          Version 1.01 / 06-DEC-1991
+                 Deuteron elastic scattering option added
+
+
+
+                        CHANGES SINCE Version 1.01
+                        --------------------------
+
+                   (See Comments in the file mceep.f
+                   for names of added/changed modules)
+
+          Version 1.10 / 08-AUG-1992
+                 Track reconstruction option added.
+                 Calculation of accidentals added.
+                 2nd order TRANSPORT added.
+                 Time-of-Flight histogram added.
+
+
+                        CHANGES SINCE Version 1.10
+                        --------------------------
+
+                   (See Comments in the file mceep.f
+                   for names of added/changed modules)
+
+          Version 1.20 / 28-OCT-1992
+                 Fixed portability problem involving variable format
+                     descriptors.  Removing variable descriptors
+                     required adding a subroutine to extract the
+                     character data at the end of an input line.
+                 Dipole nucleon form factors now used throughout.
+                 GEn now has "correct" asymptotic form.
+                 Uniform random numbers now generated by RANECU
+                     rather than RAN function.
+                 Only a single pair of initial seeds are now required
+                     rather than using different initial seeds for
+                     different variables.
+                 Initial seeds set by default or from a file
+                     (DAT$D:seeds_start.dat).  The final seeds are
+                     written to a file (DAT$D:seeds_end.dat) to allow
+                     adding results of successive runs of MCEEP.
+
+                        CHANGES SINCE Version 1.20
+                        --------------------------
+
+                   (See Comments in the file mceep.f
+                   for names of added/changed modules)
+
+          Version 2.0 / 07-OCT-1994
+                 Added N-Tuple option to allow replaying MCEEP
+                     data with PAW.  Currently, a file is written
+                     which then needs to be reformatted (outside
+                     MCEEP) for PAW.
+
+                        CHANGES SINCE Version 2.0
+                        -------------------------
+
+                   (See Comments in the file mceep.f
+                   for names of added/changed modules)
+
+          Version 2.1 / 10-SEP-1997
+           (Some of these changes have already been included in an unofficial
+            release - these are marked with an *)
+                 ELECTRO_PROD has been modified
+                     since previously a factor of i was missing
+                     from the born terms and the polarization
+                     observables were never boosted from the COM
+                     frame to the LAB frame.
+                 * Physics option 300 (d(e,e'p)n Gross/Van Orden)
+                     has been updated.
+                 * Option to bypass spectrometer traceback included
+                     so that cross sections and derived kinematics
+                     are calculated from the original coordinates.
+                 PEEPI has been modified to include boost to LAB frame.
+
+          Version 2.2 / 24-APR-1998
+                 No longer supports DEC-VMS platform
+                 Now supports Linux (Absoft f77) platform
+
+          Version 2.3 / 23-APR-1999
+                 Deuteron paris wave function added
+                 JLAB-Hall A spectrometers added via routines of J. LeRose
+
+
+                        CHANGES SINCE Version 2.3
+                        -------------------------
+
+                   (See comments in the file mceep.f
+                   for names of added/changed modules
+                   as well as names of contributors.)
+
+          Version 3.0 / 14-SEP-1999
+                 Added radiative effects, both internal and external
+                 Added realistic ionization energy loss/multiple scattering
+                 Added target models:  Single foil or multiple foils
+                                       JLAB Hall A cryotarget (LH2/LD2)
+                 Added (e,e'K+)Lambda physics option
+                 Files now opened with STATUS='UNKNOWN' so that
+                     successive runs can be done without deleting previous
+                     files.  Of course, now there is a risk of overwriting
+                     the old files (nothing's perfect).
+                 Input and output are now located in the directory
+                     from where the program is run (i.e. these directories
+                     are no longer hardwired to mceep/input and mceep/output).
+
+          Version 3.1 / 18-NOV-1999
+                 
+                 JLAB-Hall A tuna can target model (3,4He) added.
+                 3He elastic scattering option added (A. Deur).
+                 Beam raster option added (F. Sabatie).
+                 LeRose electron arm inverse functions updated.
+                 "Bowtie" effect now corrected after applying
+                     LeRose inverse functions.
+                 Now allows option of including the multi-photon
+                     correction to the radiative tail (J. Templon
+                     et al. method).
+                 Photon cutoff energy is now read in instead of
+                     hardwired to 1 MeV (1 MeV is the default though).
+                 Bug fixes in energy loss routines for either
+                     non-standard target nuclei or neutral ejectiles
+                     (now neutral ejectiles have no mult. scatt. or
+                      energy loss - a "cheap" fix).
+                 Bug fix for missing mass, since for VCS half the
+                     events are thrown out as non-physical due to
+                     roundoff/resolution effects.
+                 Bug fix for spectrometer options.  Now, TRK,
+                     MAT, ROT, DFT and TOF are only called for
+                     kinematics (ICALL=2).  This is necessary for
+                     consistency among all these options.  This
+                     bug has been known to lead to serious errors
+                     when the TRK and HRS options are combined.
+                 Bug fix for file names.  Now accomodates longer
+                     paths/names.
+                 Bug fixes for p(e,e'K) - physics option 700.
+                 Bug fix:  avg. cross section in summary file
+                     used to be calculated by taking phase space
+                     weighted sum of sigma divided by sum of unity
+                     for each event.  Now I correctly divide by
+                     sum of phase space (with radiation this can
+                     make a BIG difference).
+                 Bug fix:  for radiative tail, the unradiated
+                     cross section in Mo/Tsai and Borie/Drechsel
+                     should be calculated using vertex kinematics.
+                     This was done, except that the beam energy
+                     and scattered electron energy were the
+                     asymptotic values.  Now everything is vertex.
+                 Bug fix:  for LH2/LD2 target and spectrometer angles
+                     between -90 and -180 deg, the target path (for
+                     energy loss calculation) was incorrect.
+                     This fix was incorporated after initial release.
+                 Bug fix:  for Meier-Hadjuk 3He spectral function
+                     events with recoil momentum between 0 and 5 MeV/c
+                     were thrown out.  Now the spectral function at
+                     5 MeV/c is used for all momenta in this range.
+                     This fix was incorporated after initial release.
+                 Bug fix:  schwinger routine converted Q^2 from
+                     (GeV/c)^2 to (MeV/c)^2 by mult. by 10^3 instead
+                     of 10^6.
+                     This fix was incorporated after initial release.
+                 Now calculate focal plane vector even if event fails
+                     the aperture cuts (hrs.f).  This makes the before
+                     cuts counters physically meaningful.
+                     This fix was incorporated after initial release.
+
+          Version 3.2     29-DEC-1999
+                 Bug fix for eloss_proton.f:  emax was calculated
+                     from variables with incompatible energy scales.
+                 Improvement of denscorr.f:  C0 now corrected for
+                     difference in A as well as density.  Also
+                     corrected two bug fixes in denscorr.
+                 Added Salme 3He(e,e'p) spectral function.
+                 Added kinematics variables:
+                     components of PREC in LAB system
+                     energy loss variables
+                 Now specify object point of each spectrometer
+                     allowing for possible mispointings.
+                     The BEAM_E1-BEAM_P3 coordinates now refer
+                     to the vertex coordinates in a modified LAB
+                     system with new origin at the object point.
+                     VERTEX_X-Z refer to the actual vertex
+                     coordinates in the unmodified LAB system.
+                 Incorporate ejectile spin precession via COSY
+                     spin matrix (Mark Jones).  Also produce
+                     output for helicity dependent and helicity
+                     independent pieces of each polarization
+                     component (Mark Jones).
+
+          Version 3.3     22-FEB-2000
+                 Allow for beam centroid offsets.
+                     Also account for these offsets in the
+                     case of target foils at non-zero angle.
+                 Allow for smearing of beam position with gaussian.
+                 Allow Kinematics Ntuples to include initial and
+                     final Transport coordinates.  This allows
+                     regular kinematic quantities to be cut
+                     on these variables via Ntuples.
+                 Increase maximum # variables per Ntuple
+                     from 20 to 100.
+                 Increase maximum # of elements per spectrometer
+                     from 30 to 50.
+                 Fixed bug in beam dE/dx correction (previously
+                     there was NO CORRECTION due to bug).
+                 Set focal plane vector to zero for events
+                     which fail HRS apertures.  This avoids
+                     numerical errors on some platforms.  The
+                     eloss/mscatt routines occasionally give
+                     large effects for ray coordinates and
+                     the LeRose inverse functions are not
+                     designed to deal with events way outside
+                     the acceptance.  Note that these events
+                     fail the cuts anyway.
+                 Modified 3He elastic routine (D. Higinbotham).
+                 Added Tritium, 4He and 12C elastic
+                     routines (D. Higinbotham).
+                 Modified nuclear masses in mceep.f (D. Higinbotham).
+
+          Version 3.4     13-APR-2000
+                 Fixed "bowtie" correction and also correct for
+                     explicit X0 due to vertical raster,
+                     spectrometer mispointing, etc.
+                     Also, now one can use the "electron"
+                     spectrometer or "hadron" spectrometer
+                     for detection of either particle.
+                 GEP (for FFTYPE='DIPOLE') now employs fit to
+                     JLAB-Hall A GEP/GMP ratio in E93027
+                     (GMP is taken to be standard dipole
+                     form factor times MUP)
+                     (S. Dieterich/S. Strauch).
+                 Several new deuteron momentum distributions
+                     from Sabine Jeschonnek: Bonn, Argonne V18,
+                     CD Bonn, Gross/Van Orden.
+                 Now allow histogramming of focal plane coords.
+                     in addition to coords. before and after
+                     call to SPECTROMETER.
+                 MCEEP now beeps when it finishes (just like
+                     ESPACE - amazing).
+                 Routines SPLINE and SPLINT in wave.f renamed
+                     to GROSS_SPLINE and GROSS_SPLINT to avoid
+                     conflict with routines of EPIPROD (J.J. Kelly)
+                     with same names.
+                 Add histograms/ntuples of various kinematical
+                     quantities defined with respect to the
+                     virtual photon vertex (as opposed to the
+                     normally measured kinematical quantities
+                     which reflect radiation).
+                 Incorporate LeRose's new forward functions which
+                     have improved x0 dependence.
+                 Increased precision for Ntuple write statement.
+                 Fixed bug in elossw where the energy loss in the
+                     endcap (for target model=2) was negative
+                     for abs(proton_angle)>90.
+                 Added components of polarizations in scattering
+                     plane (total, hel. dep. and hel. indep.)
+                     (S. Strauch); changed tag for electron
+                     analyzing power from 8 to 11.
+
+          Version 3.5     07-NOV-2000
+                 Incorporated Arenhoevel interpolated response
+                     functions for d(e,e'p)n.
+                 Added multiple weight Ntuple ('NTM').
+                 Changed REAL-->DREAL in deut_sabjes.f to fix
+                     problems with g77 compiler (K. Fissum, 
+                     S. Jeschonnek).  Also fixed bug in get_deut_bonn
+                     (removed the argument list).
+                     These changes were made after
+                     the original distribution of Version 3.5
+                     (on 01-FEB-2001).
+                 Added angles of recoil momentum vector in LAB.
+                     This change was made after the original release of
+                     Version 3.5 (on 07-FEB-2001). 
+                 Fixed bug in targ_geom.f.  The solid angle Jacobian
+                     had an error (pointed out by Marat Rvachev).
+                     This error is very small in most cases
+                     (much less than 1%).
+                     This change was made after the original release of
+                     Version 3.5 (on 13-MAR-2001). 
+                 Added modification of make_hbook script since on some
+                     systems indentation of one of the temporary files
+                     seems to be a problem (modification by Zhengwei Chai
+                     on 11-APR-2001).
+                 Added spectral functions for 16O from Udias and
+                     for 208Pb from Lapikas.  These were all
+                     coded by K. Fissum.  (16-APR-2001).
+
+          Version 3.6     28-JUN-2001
+
+                 Allow histogramming of X and Y at HRS apertures.
+                 Changed default Q3 radius for HRS from 0.30 m
+                 Get arenhoevel responses from directory defined
+                     by environment variable mceep_aren
+                 Added JLAB-HRS R-functions of J. LeRose. 
+                     Also included new routine in mceep_util to 
+                     add R-function values to exising
+                     data N-tuples. (Mark Jones coded this with 
+                     some modifications from me.)  This allows comparing 
+                     data and MCEEP with same R-function cuts.
+                 Fixed bug:  for energy loss with dE/dx correction
+                     the acceptances were enforced after making
+                     this correction, whereas they are now
+                     enforced prior to dE/dx correction.
+                 Include updated p(e,e'K) routine from P. Markowitz
+
+          Version 3.7     03-MAY-2002
+
+                 Now runs on SGI operating system (thanks to Steve Wood).
+                 Nucleon form factor routine, formfact.f, now
+                     refers to standard dipole as FFTYPE='DIPOLE',
+                     whereas the Hall A Fit to GE/GM is given by
+                     FFTYPE='HALLA1' (uses dipole GMp).  Another
+                     fit was also added called 'HALLA2' which
+                     uses alternate extraction of GMp and also the 
+                     Hall A GE/GM ratio to get GEp.  A third
+                     fit called 'HALLA3' (now the default)
+                     uses an alternate MMD form factor for GMp
+                     and the Hall A GE/GM ratio to get GEp.
+                     Other parametrizations added too.
+                 New LeRose transfer functions (forward and
+                     reverse) and new r-functions (data files
+                     only).
+                 Added Hall A MAD spectrometer (K. McCormick).
+                 Added Hall A polarized 3He target (K. McCormick).
+                 Contains a set of tools to analyze kinematic related 
+                     sytematic uncertainties.
+
+          Version 3.7  (update) 27-SEP-2002
+
+                 An option within mceep_util to add r-functions
+                     to ESPACE generated HBOOK column-wise Ntuples 
+                     (see the file ~/mceep/utilities/README_CWN 
+                     for details). 
+
+          Version 3.8     24-APR-2003
+                 COSY model of JLab Hall A HRS (adapted from
+                     Hall C program, SIMC) added (W. Hinton).
+                 Small change made in r-function.f 
+                     (both in sources and in utilities directories) 
+                     allowing the program to compile on Sun
+                     systems.
+                 Fixed bug in tg_path.f
+
+          Version 3.9     03-AUG-2005
+                 Added calculation of x_tg(5) in hrs_inv.f.  
+                     Also, now use this information to get the 
+                     interaction point in the target as seen
+                     by the spectrometers. (i.e. the BEAM_E1, BEAM_E2 
+                     and BEAM_E3 variables now refer to the interaction
+                     point, rather than the point where the particle 
+                     intersects the target Transport (Z=0) plane.
+                     Same for proton variables).
+                 For the case of foils, the various walls were not
+                     handled properly in energy loss routines. There were 
+                     several bugs, now fixed.
+                 The formatting of the cosy source files has been 
+                     standardized for compatibility with the latest 
+                     ABSOFT compiler (W. Boeglin).
+                 Added bremsstrahlung routine for elastic ep by
+                     Florian Weissbach and Kai Hencken.
+                 Added deForest sigma_CC2 offshell cross section (P. Monaghan).
+                 Added cigar tube LH2/LD2 target (H. Ibrahim).
+                 Added MAD 12 degree configs. (standard and no quad tunes).
+                 Added MCEEP Ntuple to ROOT file conversion (W. Boeglin).
+                 Modified ~/mceep/utilities/make_hbook so that temporary 
+                     files have unique names (associated with input file 
+                     names).  This allows running several mceep scripts 
+                     simultaneously without file conflicts (H. Ibrahim).
+                 Now allow for calculation of spectrometer acceptance 
+                     functions (must bypass kinem in case of failure there).
+                 Fixed bug:  Window energy loss was doubly included!
+                 Fixed some portability issues with Sun-OS.
+                 Fixed bug in c12_elastic routine (R. Feuerbach).
+                 Fixed bug in harmonic oscillator momentum distributions
+                     as the model numbers were incorrect.
+                 Added option to correct for most probable energy
+                     loss (mean energy loss correction was only
+                     option before)
+                 Added Laget grid for d(e,e'p) (E. Voutier/P. Ulmer).
+                 Added the septum optics model ala' J. LeRose.
+                     Should be analogous to HRS model (P. Markowitz)

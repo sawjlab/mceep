@@ -1,0 +1,65 @@
+
+-------------------------------------------------------------------
+      Kinematic Related Systematic Error Evaluation Code
+-------------------------------------------------------------------
+
+This directory contains tools to analyze systematic errors
+in conjunction with MCEEP.  MCEEP must first be run to output
+an Ntuple of the Transport vectors (see the test input located
+here:  "trvec.inp").
+
+Note that the code systerr will not deal with radiative effects
+but assumes the errors can be calculated from the unradiated
+cross sections.  Therefore, you should run MCEEP without 
+radiation.
+
+There are three main utilities in this directory:
+
+1) systerr:  a Fortran code which should be run to generate a 
+   new Ntuple from the MCEEP Ntuple.  The new Ntuple is a copy
+   of the original but also includes cross sections for 1 mr
+   or 10^-3 shifts of each of the nine kinematic variables
+   (3 beam, 3 scattered electron, 3 ejectile).
+2) systerr.kumac:  a PAW kumac file which will display the cross 
+   section fractional derivatives (in units of /mr, /10^-3).
+   This kumac should be run after the Fortran code, systerr, in
+   order to generate event-averaged vectors of the cross sections
+   for each of the different offsets.
+3) toterr:  a Fortran code which will generate the total error
+   from the vectors produced by systerr.kumac.
+
+Instructions to execute the test case, located here, follow.
+Everything below assumes you installed MCEEP from your 
+topmost directory.
+
+0) You should set your working directory to "~/mceep/systerr".
+1) First run mceep to generate the input hbook file 
+   with the Transport vectors.  You can do this with:
+   "~/mceep/sources/mceep < mceep_control"
+2) Next generate the hbook file from the mceep output.
+   "~/mceep/utilities/make_hbook trvec"
+3) Now run the systerr code.
+   "./systerr < systerr_control"
+4) Process the resulting hbook file (trvec_err.hbook) and
+   examine the results in PAW (after opening the hbook file):
+   PAW> exec systerr
+   Before hitting RET to get the total error, do step 5.
+5) Run the toterr code:
+   "./toterr"
+    "errmat.inp"
+6) PAW> RET
+
+The result of step 4 will be a 3x3 panel figure with the top row for
+the beam uncertainties, the middle for the scattered electron
+and the bottom for the ejectile.  The left column is for 10^-3
+shifts of the momenta, the middle column is for 1 mr shifts
+of the in-plane angles and the right column is for 1 mr shifts
+of the out-of-plane angles.
+
+The result of step 6 will be a single plot of the total (quadrature
+sum) error vs. the kinematic variable specified in systerr.kumac.
+You can change the histogram limits/channel numbers by editing the top
+lines of "systerr.kumac".
+
+Have fun!
+

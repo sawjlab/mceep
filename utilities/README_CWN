@@ -1,0 +1,14 @@
+---------------------------------------------------------------
+   Instructions for adding r-function values to pre-existing
+         HBOOK column-wise Ntuple created by ESPACE
+----------------------------------------------------------------
+
+1) Edit the file ~/mceep/cmn/ntu_user.cmn (see that file for
+   instructions).
+2) Run ~/mceep/utilities/mceep_util (option 5) from the directory
+   containing your input ESPACE HBOOK file.  This will generate
+   a file called "skeleton" in that directory.
+3) Execute the script ~/mceep/utilities/build_cwn_include from 
+   the directory containing your input HBOOK file.
+4) Run ~/mceep/utilities/mceep_util (option 6) from the directory
+   containing your input ESPACE HBOOK file.

@@ -1,0 +1,25 @@
+C
+C     Variable declarations/commons for X and Y at septum apertures
+C     3 is entrance, 4 is 1/4, 5 is 1/2, 6 is 3/4 and 7 is 4/4 through
+C
+      COMMON /esep3xy/  sl_ep3_x,sl_ep3_y
+      COMMON /esep4xy/  sl_ep4_x,sl_ep4_y
+      COMMON /esep5xy/  sl_ep5_x,sl_ep5_y
+      COMMON /esep6xy/  sl_ep6_x,sl_ep6_y 
+      COMMON /esep7xy/  sl_ep7_x,sl_ep7_y 
+      COMMON /hsep3xy/  sr_ep3_x,sr_ep3_y
+      COMMON /hsep4xy/  sr_ep4_x,sr_ep4_y
+      COMMON /hsep5xy/  sr_ep5_x,sr_ep5_y 
+      COMMON /hsep6xy/  sr_ep6_x,sr_ep6_y 
+      COMMON /hsep7xy/  sr_ep7_x,sr_ep7_y 
+C
+      DOUBLE PRECISION sl_ep3_x,sl_ep3_y
+      DOUBLE PRECISION sl_ep4_x,sl_ep4_y
+      DOUBLE PRECISION sl_ep5_x,sl_ep5_y
+      DOUBLE PRECISION sl_ep6_x,sl_ep6_y
+      DOUBLE PRECISION sl_ep7_x,sl_ep7_y
+      DOUBLE PRECISION sr_ep3_x,sr_ep3_y
+      DOUBLE PRECISION sr_ep4_x,sr_ep4_y
+      DOUBLE PRECISION sr_ep5_x,sr_ep5_y
+      DOUBLE PRECISION sr_ep6_x,sr_ep6_y
+      DOUBLE PRECISION sr_ep7_x,sr_ep7_y

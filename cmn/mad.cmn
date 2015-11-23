@@ -1,0 +1,12 @@
+C
+C     Variable declarations/commons for X and Y at MAD apertures
+C
+      COMMON /mag1xy/  mag1_ent_x,mag1_ent_y,mag1_mid_x,mag1_mid_y,
+     #                 mag1_ext_x,mag1_ext_y  
+      COMMON /mag2xy/  mag2_ent_x,mag2_ent_y,mag2_mid_x,mag2_mid_y,
+     #                 mag2_ext_x,mag2_ext_y 
+C
+      DOUBLE PRECISION mag1_ent_x,mag1_ent_y,mag1_ext_x,mag1_ext_y 
+      DOUBLE PRECISION mag1_mid_x,mag1_mid_y
+      DOUBLE PRECISION mag2_ent_x,mag2_ent_y,mag2_ext_x,mag2_ext_y 
+      DOUBLE PRECISION mag2_mid_x,mag2_mid_y

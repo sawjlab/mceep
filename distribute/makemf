@@ -1,0 +1,411 @@
+#!/bin/sh
+#
+#----------------------------------------------------------------------------
+#----------------------------------------------------------------------------
+# makemf
+#
+# Author:  P.E. Ulmer
+# Date:    April 14, 1998
+#
+#
+# Purpose:  Make a makefile by scanning source and common directories.
+#
+# Command syntax:
+#           makemf opsys program
+#
+#           Currently supported "operating systems", opsys, are:
+#                  ultrix, hp, osf1, sun, absoft, g77, sgi
+#                  (absoft and g77 are Linux compilers) 
+#
+#           program is either:
+#                  mceep, mceep_util
+#
+# An input file will be created by scanning the source and
+# include directories.  The makefile will then be generated
+# from this input file.
+#
+#
+# The input file will be structured as follows:
+#
+#     OPSYS = operating_system
+#     PROGRAM = program_name
+#     DIR_PREFIX = directory_prefix
+#     file1.cmn
+#           ...
+#     filen.cmn
+#     n file1.f filei.cmn ... filej.cmn
+#
+#       where n is a label referring to the nth source directory
+#
+# The ordering of the lines is not important.
+#
+#----------------------------------------------------------------------------
+#----------------------------------------------------------------------------
+#
+opsys=$1              # get operating system from command line
+program=$2            # get program name from command line
+infile=makefile.in    # default name for the input file
+outfile=makefile      # default name for the makefile
+case $program in
+  mceep)
+      makedir=sources
+      source_dirs="sources gross cosy"
+      ;;
+  mceep_util)
+      makedir=utilities
+      source_dirs="utilities"
+      ;;
+esac
+#
+case $opsys in
+  hp)
+      sysawk=awk
+      ;;
+  ultrix)
+      sysawk=nawk
+      ;;
+  osf1)
+      sysawk=nawk
+      ;;
+  sun)
+      sysawk=nawk
+      ;;
+  absoft)
+      sysawk=awk
+      ;;
+  g77)
+      sysawk=awk
+      ;;
+  sgi)
+      sysawk=awk
+      ;;
+esac
+#
+#----------------------------------------------------------------------------
+#
+# GENERATE THE INPUT FILE BY SCANNING THE INCLUDE AND SOURCE
+# DIRECTORIES.
+#
+# The source directory is scanned and each source is scanned
+# for include dependencies.  The make input file is created
+# with the parent directory as DIR_PREFIX and
+# program_name as PROGRAM and updated to include these dependencies.
+#
+# Then the makefile is generated
+# from this input file.  Also, the include directory is scanned
+# and each include file inserted into the input file.
+#----------------------------------------------------------------------------
+#
+#----------------------------------------------------------------------------
+# Create the input file and define the program name and root directory.
+#----------------------------------------------------------------------------
+#
+cd ..
+echo 'OPSYS = '$opsys > $makedir/$infile
+echo 'PROGRAM = '$program >> $makedir/$infile
+echo 'DIR_PREFIX = '`pwd` >> $makedir/$infile
+#
+#----------------------------------------------------------------------------
+# Get the include files.
+#----------------------------------------------------------------------------
+#
+cd cmn
+for i in `ls *.cmn`
+do
+  incfile=$i
+echo $incfile >> ../$makedir/$infile
+done
+cd ..
+#
+#----------------------------------------------------------------------------
+# Get fortran file dependencies.
+#----------------------------------------------------------------------------
+#
+x=0
+for j in $source_dirs
+do
+  x=`expr $x + 1`
+  cd $j
+  for i in `ls *.f`
+  do
+    fortfile=$i
+#
+#----------------------------------------------------------------------------
+# For each fortran file, determine all occurences of include files
+# and write to a temporary file.
+#----------------------------------------------------------------------------
+#
+    $sysawk 'BEGIN {file=ARGV[1];ARGV[1]="";dirnum=ARGV[2];ARGV[2]=""}
+      /INCLUDE/ && /\.cmn/ && $1 !~/^[cC]/ {
+      inc=inc " " substr($2,2,length($2)-2)
+  } END {print dirnum " " file inc}' $fortfile $x $fortfile >> ../$makedir/.tmp
+#
+  done
+  cd ..
+done
+cd $makedir
+#
+#----------------------------------------------------------------------------
+# Read the temporary file and eliminate multiple occurences of
+# the same include file.
+#----------------------------------------------------------------------------
+#
+$sysawk ' {
+  inc=$1
+  i=2
+  while (i<=NF) {
+    pass=1
+    j=2
+    while (j<i) {
+      if($i==$j) pass=0
+      j++ 
+    }
+    if(pass==1) inc = inc " " $i
+    i++
+  }
+  print inc
+}' .tmp >> $infile
+rm -f .tmp
+#
+#----------------------------------------------------------------------------
+#
+# NOW START PUTTING THE MAKEFILE TOGETHER BASED ON THE INFORMATION IN
+# THE INPUT FILE.
+#
+# For fortran file lines, determine the record number where the include
+# files begin.
+#
+#----------------------------------------------------------------------------
+#
+nstart=3
+#
+sed -n '/OPSYS/ p' $infile > $outfile        # get op sys from infile
+#
+sed -n '/PROGRAM/ p' $infile >> $outfile     # get program name from infile
+#
+sed -n '/DIR_PREFIX/ p' $infile >> $outfile  # get dir_prefix from infile
+#
+echo '#' >> $outfile
+#
+case $program in
+  mceep)
+     echo 'ifeq ($(OPSYS),hp)' >> $outfile
+     echo '  F77 = f77' >> $outfile
+     echo '  FFLAGS = +E6 +ppu -c -I$(mceep_cmn)' >> $outfile 
+     echo '  LINKFLAGS = +E6 +ppu -o' >> $outfile 
+     echo '  LIBS = -Wl,-L$(CERN_ROOT)/lib \' >> $outfile
+     echo '         -lmathlib' >> $outfile
+     echo 'endif' >> $outfile
+#
+     echo '#' >> $outfile
+     echo 'ifeq ($(OPSYS),ultrix)' >> $outfile
+     echo '  F77 = f77' >> $outfile
+     echo '  FFLAGS = -vms -c -I$(mceep_cmn)' >> $outfile 
+     echo '  LINKFLAGS = -vms -o' >> $outfile 
+     echo '  CERN_ROOT = /usr/local/cern/94b' >> $outfile
+     echo '  LIBS = -Wl,-L$(CERN_ROOT)/lib \' >> $outfile
+     echo '         -lmathlib' >> $outfile
+     echo 'endif' >> $outfile
+#
+     echo '#' >> $outfile
+     echo 'ifeq ($(OPSYS),osf1)' >> $outfile
+     echo '  F77 = f77' >> $outfile
+     echo '  FFLAGS = -vms -c -I$(mceep_cmn)' >> $outfile 
+     echo '  LINKFLAGS = -vms -o' >> $outfile 
+     echo '  LIBS = -Wl,-L$(CERN_ROOT)/lib \' >> $outfile
+     echo '         -lmathlib' >> $outfile
+     echo 'endif' >> $outfile
+#
+     echo '#' >> $outfile
+     echo 'ifeq ($(OPSYS),sun)' >> $outfile
+     echo '  F77 = f77' >> $outfile
+     echo '  FFLAGS = -ext_names=underscores -c -I$(mceep_cmn)' >> $outfile 
+     echo '  LINKFLAGS = -o' >> $outfile 
+     echo '  LIBS = -L$(CERN_ROOT)/lib \' >> $outfile
+     echo '         -lmathlib' >> $outfile
+     echo 'endif' >> $outfile
+#
+     echo '#' >> $outfile
+     echo 'ifeq ($(OPSYS),absoft)' >> $outfile
+     echo '  F77 = f77' >> $outfile
+     echo '  FFLAGS = -c -s -N22 -N90 -B108 -f -I$(mceep_cmn)' >> $outfile
+     echo '  LINKFLAGS = -X -defsym -X MAIN__=main -o' >> $outfile
+     echo '  LIBS = -L$(CERN_ROOT)/lib \' >> $outfile
+     echo '         -lmathlib' >> $outfile
+     echo 'endif' >> $outfile
+#
+     echo '#' >> $outfile
+     echo 'ifeq ($(OPSYS),g77)' >> $outfile
+     echo '  F77 = g77' >> $outfile
+     echo '  FFLAGS = -c -I$(mceep_cmn)' >> $outfile
+     echo '  LINKFLAGS = -o' >> $outfile
+     echo '  LIBS = -L$(CERN_ROOT)/lib -lmathlib' >> $outfile
+     echo 'endif' >> $outfile
+#
+     echo '#' >> $outfile
+     echo 'ifeq ($(OPSYS),sgi)' >> $outfile
+     echo '  F77 = f77' >> $outfile
+     echo '  FFLAGS = -vms_cc -c -I$(mceep_cmn)' >> $outfile
+     echo '  LINKFLAGS = -vms_cc -o' >> $outfile
+     echo '  CERN_ROOT = /cern/pro' >> $outfile
+     echo '  LIBS = -Wl,-L$(CERN_ROOT)/lib \' >> $outfile
+     echo '         -lmathlib' >> $outfile
+     echo 'endif' >> $outfile
+#
+     echo '#' >> $outfile
+     ;;
+  mceep_util)
+     echo 'ifeq ($(OPSYS),hp)' >> $outfile
+     echo '  F77 = f77' >> $outfile
+     echo '  FFLAGS = +E6 +ppu -c -I$(mceep_cmn)' >> $outfile 
+     echo '  LINKFLAGS = +E6 +ppu -o' >> $outfile 
+     echo '  LIBS = -Wl,-L$(CERN_ROOT)/lib \' >> $outfile
+     echo '         -lgraflib -lgrafX11 -lpacklib \' >> $outfile
+     echo '         -Wl,-L/usr/lib/X11R5 -lX11 -lm' >> $outfile
+     echo 'endif' >> $outfile
+#
+     echo '#' >> $outfile
+     echo 'ifeq ($(OPSYS),ultrix)' >> $outfile
+     echo '  F77 = f77' >> $outfile
+     echo '  FFLAGS = -vms -c -I$(mceep_cmn)' >> $outfile 
+     echo '  LINKFLAGS = -vms -o' >> $outfile 
+     echo '  CERN_ROOT = /usr/local/cern/94b' >> $outfile
+     echo '  LIBS = -Wl,-L$(CERN_ROOT)/lib \' >> $outfile
+     echo '         -lgraflib -lgrafX11 -lpacklib \' >> $outfile
+     echo '         -Wl,-L/usr/lib/X11R5 -lX11 -lm' >> $outfile
+     echo 'endif' >> $outfile
+#
+     echo '#' >> $outfile
+     echo 'ifeq ($(OPSYS),osf1)' >> $outfile
+     echo '  F77 = f77' >> $outfile
+     echo '  FFLAGS = -vms -c -I$(mceep_cmn)' >> $outfile 
+     echo '  LINKFLAGS = -vms -o' >> $outfile 
+     echo '  LIBS = -Wl,-L$(CERN_ROOT)/lib \' >> $outfile
+     echo '         -lgraflib -lgrafX11 -lpacklib \' >> $outfile
+     echo '         -Wl,-L/usr/lib/X11R5 -lX11 -lm' >> $outfile
+     echo 'endif' >> $outfile
+#
+     echo '#' >> $outfile
+     echo 'ifeq ($(OPSYS),sun)' >> $outfile
+     echo '  F77 = f77' >> $outfile
+     echo '  FFLAGS = -ext_names=underscores -c -I$(mceep_cmn)' >> $outfile 
+     echo '  LINKFLAGS = -o' >> $outfile 
+     echo '  LIBS = -L$(CERN_ROOT)/lib \' >> $outfile
+     echo '         -lgraflib -lgrafX11 -lpacklib \' >> $outfile
+     echo '         -L/usr/lib -lsocket -lnsl -lm' >> $outfile
+     echo 'endif' >> $outfile
+#
+     echo '#' >> $outfile
+     echo 'ifeq ($(OPSYS),absoft)' >> $outfile
+     echo '  F77 = f77' >> $outfile
+     echo '  FFLAGS = -c -s -N22 -N90 -B108 -f -I$(mceep_cmn)' >> $outfile
+     echo '  LINKFLAGS = -X -defsym -X MAIN__=main -o' >> $outfile
+     echo '  LIBS = -L$(CERN_ROOT)/lib \' >> $outfile
+     echo '         -lpacklib \' >> $outfile
+     echo '         -L/usr/lib -lf2c -lm' >> $outfile
+     echo '#        -L/usr/local/farm1/cernlib/99/lib -lf2c -L/usr/lib -lm' >> $outfile
+     echo 'endif' >> $outfile
+#
+     echo '#' >> $outfile
+     echo 'ifeq ($(OPSYS),g77)' >> $outfile
+     echo '  F77 = g77' >> $outfile
+     echo '  FFLAGS = -c -I$(mceep_cmn)' >> $outfile
+     echo '  LINKFLAGS = -o' >> $outfile
+     echo '  LIBS = -L$(CERN_ROOT)/lib -lpacklib \' >> $outfile
+     echo '         -L/usr/lib/gcc-lib/i486-suse-linux/2.95.2 -lg2c \' >> $outfile
+     echo '         -L/usr/lib -lm' >> $outfile
+     echo '#        -L/usr/local/farm1/cernlib/99/lib -lf2c -L/usr/lib -lm' >> $outfile
+     echo 'endif' >> $outfile
+#
+     echo '#' >> $outfile
+     echo 'ifeq ($(OPSYS),sgi)' >> $outfile
+     echo '  F77 = f77' >> $outfile
+     echo '  FFLAGS = -vms_cc -c -I$(mceep_cmn)' >> $outfile
+     echo '  LINKFLAGS = -vms_cc -o' >> $outfile
+     echo '  CERN_ROOT = /cern/pro' >> $outfile
+     echo '  LIBS = -Wl,-L$(CERN_ROOT)/lib \' >> $outfile
+     echo '         -lgraflib -lgrafX11 -lpacklib \' >> $outfile
+     echo '         -Wl,-L/usr/lib/X11R5 -lX11 -lm' >> $outfile
+     echo 'endif' >> $outfile
+#
+     echo '#' >> $outfile
+     ;;
+esac
+#
+#----------------------------------------------------------------------------
+# The subdirectory structure is made here.
+#----------------------------------------------------------------------------
+#
+echo '#' >> $outfile
+#
+x=0
+for i in $source_dirs
+do
+  x=`expr $x + 1`
+  echo 'SRC_DIR'$x' = $(DIR_PREFIX)/'$i >> $outfile
+  echo 'OBJ_DIR'$x' = $(DIR_PREFIX)/'$i >> $outfile
+done
+#echo 'INC_DIR = $(DIR_PREFIX)/cmn' >> $outfile
+#
+#----------------------------------------------------------------------------
+# Define the objects to be linked for the executable.
+#----------------------------------------------------------------------------
+#
+echo 'fort_objs = \' >> $outfile
+#
+$sysawk '/\.f/ {
+  spaces = "          "
+  obj=$1")/"substr($2,1,length($2)-2) ".o"
+  print spaces "$(OBJ_DIR" obj " \\"
+}' $infile >> $outfile
+#
+echo ' ' >> $outfile
+#
+echo 'all_objs = $(fort_objs)' >> $outfile
+#
+#----------------------------------------------------------------------------
+# Link object files to make the executable.
+#----------------------------------------------------------------------------
+#
+echo '#' >> $outfile
+echo '$(PROGRAM): $(all_objs)' >> $outfile
+echo '	rm -f $@' >> $outfile
+echo '	$(F77) $(LINKFLAGS) $@ $(all_objs) $(LIBS)' >> $outfile
+echo ' ' >> $outfile
+#
+#----------------------------------------------------------------------------
+# Setup object file/source file dependencies.
+#----------------------------------------------------------------------------
+#
+echo '#' >> $outfile
+echo '# Get the object files from the sources' >> $outfile
+echo '#' >> $outfile
+$sysawk 'BEGIN {nstart=ARGV[1];ARGV[1]=""}
+  /\.f/ {
+  spaces  = "               "
+#
+#----------------------------------------------------------------------------
+# Get object file name by substituting appropriate extension.
+#----------------------------------------------------------------------------
+#
+  src=$1")/"$2
+  obj=$1")/"substr($2,1,length($2)-2) ".o"
+#
+#----------------------------------------------------------------------------
+# Object file dependencies on sources
+#----------------------------------------------------------------------------
+#
+  if(nstart==NF+1) print "$(OBJ_DIR" obj ": $(SRC_DIR" src
+  if(nstart<NF+1)  print "$(OBJ_DIR" obj ": $(SRC_DIR" src " \\"
+#
+#----------------------------------------------------------------------------
+# Object file dependencies on include files
+#----------------------------------------------------------------------------
+#
+  for (i=nstart; i<=NF; i++) {
+    if(i<NF) print spaces "$(mceep_cmn)/" substr($i,1) " \\"
+    if(i==NF) print spaces "$(mceep_cmn)/" substr($i,1) }
+  print "	rm -f $@"
+  print "	$(F77) -o $@ $(FFLAGS) $(SRC_DIR" src
+}' $nstart $infile >> $outfile
+

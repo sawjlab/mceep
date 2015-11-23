@@ -1,0 +1,39 @@
+OPSYS = g77
+PROGRAM = mceep_util
+DIR_PREFIX = /home/saw/MCEEP/JJ/mceep
+apertures.cmn
+aren_ranges.cmn
+aren_respon.cmn
+eloss.cmn
+hrs.cmn
+input.cmn
+labcoord.cmn
+lifetimes.cmn
+lifetimes_dat.cmn
+mad.cmn
+masses.cmn
+masses_dat.cmn
+ntu.cmn
+ntu_sav.cmn
+ntu_user.cmn
+ntu_user_sav.cmn
+rada.cmn
+ran.cmn
+sep.cmn
+spectrometer.cmn
+spectrometer_dat.cmn
+spin.cmn
+struct_hrs.cmn
+summary.cmn
+track.cmn
+var.cmn
+var_dat.cmn
+wc.cmn
+1 gauss.f
+1 get_include_cwn.f
+1 make_new_cwn.f ntu.cmn ntu_user.cmn
+1 make_new_rwn.f
+1 mceep_to_hbook.f var.cmn spectrometer.cmn var_dat.cmn spectrometer_dat.cmn
+1 mceep_util.f
+1 ratio.f
+1 r-function.f

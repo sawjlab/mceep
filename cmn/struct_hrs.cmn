@@ -1,0 +1,21 @@
+c	struct_hrs.cmn
+
+! Define some record structures
+
+! note HRS collimators are rectangular
+        DOUBLE PRECISION  h_entr,v_entr         !horiz. and vert. 1/2 gap of fixed slit
+        DOUBLE PRECISION  h_exit,v_exit         !horiz. and vert. 1/2 gap of fixed slit
+	DOUBLE PRECISION  y_offset,x_offset	!horiz. and vert. position offset of slit
+	DOUBLE PRECISION  z_offset	        !offset in distance from target to front of slit.
+
+
+	parameter (h_entr = 3.150)              !was 3.150
+	parameter (v_entr = 6.090)		!was 6.090
+	parameter (h_exit = 3.340)		!was 3.340
+	parameter (v_exit = 6.490)		!was 6.490
+	parameter (y_offset  = 0.0)
+	parameter (x_offset  = 0.0)
+	parameter (z_offset  = 0.0)
+
+
+

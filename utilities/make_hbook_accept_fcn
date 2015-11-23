@@ -1,0 +1,20 @@
+#!/bin/sh
+#
+# Script to use mceep utility program produce hbook file
+# from acceptance function ntuple.
+#
+# Command syntax:  "make_hbook_accept_fcn"
+#
+# Creates the file accept_fcn.hbook from accept_fcn.ntu
+#
+echo "1" > .temp
+echo "accept_fcn.hbook" >> .temp
+echo "N" >> .temp
+echo "accept_fcn.ntu" >> .temp
+echo " " >> .temp
+echo " " >> .temp
+#
+$mceep_util/mceep_util < ./.temp > .temp2
+rm ./.temp
+rm ./.temp2
+echo "accept_fcn.hbook created"
